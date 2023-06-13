@@ -8,9 +8,20 @@ project(MosaBackend)
 
 # TODO ソースファイルを追加
 set(proj_src
-	main.cpp
+	src/main.cpp
 )
 
+# boost asio追加
+include(FetchContent)
+
+FetchContent_Declare(
+    Boost
+    GIT_REPOSITORY https://github.com/boostorg/asio.git
+)
+
+FetchContent_MakeAvailable(Boost)
+
+# add executable
 add_executable(${CMAKE_PROJECT_NAME} ${proj_src})
 
 target_compile_features(${CMAKE_PROJECT_NAME} PUBLIC cxx_std_20)
@@ -22,3 +33,8 @@ target_compile_options(${CMAKE_PROJECT_NAME} PUBLIC
 include_directories(
     ${PROJECT_SOURCE_DIR}
 )
+
+# pthreadのlink
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC "-pthread")
