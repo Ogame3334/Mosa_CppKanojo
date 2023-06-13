@@ -8,7 +8,7 @@ project(MosaBackend)
 
 # TODO ソースファイルを追加
 set(proj_src
-	main.cpp
+	src/main.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${proj_src})
