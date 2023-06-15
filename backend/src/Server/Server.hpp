@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/asio.hpp>
 #include <memory>
 #include "../Handler/HandlerBase.hpp"
 
@@ -10,7 +11,7 @@ namespace FruitsGroove{
         HandlerPtr handerInstance;
         boost::asio::ip::udp::socket sock;
     public:
-        Server() = default;
+        Server() = delete;
         Server(HandlerPtr instance);
         ~Server() = default;
         void Start();
