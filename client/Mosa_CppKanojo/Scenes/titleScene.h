@@ -23,6 +23,10 @@ public:
 			// 曲選択シーンに遷移
 			changeScene(U"Choice");
 		}
+		// ESCキーが押されたらゲームを終了
+		if (KeyEscape.pressed()) {
+			System::Exit();
+		}
 	}
 
 	void draw() const override

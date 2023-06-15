@@ -1,5 +1,6 @@
 ﻿# include <Siv3D.hpp>
-#include "Scenes/titleScene.h"
+# include "Scenes/titleScene.h"
+# include "Scenes/choiceScene.h"
 
 using App = SceneManager<String>;
 
@@ -52,12 +53,17 @@ void Main()
 	// タイトルシーン（名前は "Title"）を登録
 	manager.add<Title>(U"Title");
 
+	// 曲選択シーン（名前は "Choice"）を登録
+	manager.add<Choice>(U"Choice");
+
 	// ゲームシーン（名前は "Game"）を登録
 	manager.add<Game>(U"Game");
 
 	// 画面サイズを1920 x 1080に変更
 	Window::SetStyle(WindowStyle::Sizable);
 	Window::Resize(1920, 1080);
+
+	System::SetTerminationTriggers(UserAction::NoAction);
 
 	while (System::Update())
 	{
