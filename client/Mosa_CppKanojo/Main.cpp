@@ -1,34 +1,46 @@
 ﻿# include <Siv3D.hpp>
+# include "Scenes/titleScene.h"
+# include "Scenes/choiceScene.h"
 
 using App = SceneManager<String>;
 
-// タイトルシーン
-class Title : public App::Scene
+// ゲームシーン
+class Game : public App::Scene
 {
 public:
 
-	// コンストラクタ（必ず実装）
-	Title(const InitData& init)
+	Game(const InitData& init)
 		: IScene{ init }
+		, m_texture{ U"🐈"_emoji }
 	{
-
+		Print << U"Game::Game()";
 	}
 
-	// 更新関数（オプション）
+	~Game()
+	{
+		Print << U"Game::~Game()";
+	}
+
 	void update() override
 	{
-
+		// 左クリックで
+		if (MouseL.down())
+		{
+			// タイトルシーンに遷移
+			changeScene(U"Title");
+		}
 	}
 
-	// 描画関数（オプション）
 	void draw() const override
 	{
-		Scene::SetBackground(ColorF{ 0.3, 0.4, 0.5 });
+		Scene::SetBackground(ColorF(0.2, 0.8, 0.6));
 
-		FontAsset(U"TitleFont")(U"My Game").drawAt(400, 100);
-
-		Circle{ Cursor::Pos(), 50 }.draw(Palette::Orange);
+		m_texture.drawAt(Cursor::Pos());
 	}
+
+private:
+
+	Texture m_texture;
 };
 
 void Main()
@@ -41,10 +53,18 @@ void Main()
 	// タイトルシーン（名前は "Title"）を登録
 	manager.add<Title>(U"Title");
 
+	// 曲選択シーン（名前は "Choice"）を登録
+	manager.add<Choice>(U"Choice");
+
+	// ゲームシーン（名前は "Game"）を登録
+	manager.add<Game>(U"Game");
+
+	// 画面サイズを1920 x 1080に変更
+	Window::SetStyle(WindowStyle::Sizable);
+	Window::Resize(1920, 1080);
+
 	while (System::Update())
 	{
-		// 現在のシーンを実行
-		// シーンに実装した .update() と .draw() が実行される
 		if (not manager.update())
 		{
 			break;
