@@ -10,7 +10,7 @@ namespace FruitsGroove{
 class PacketBuilder{
 private:
     OperationType opType;
-    std::string etc;
+    std::string content;
     
 public:
     PacketBuilder(){};
@@ -21,7 +21,7 @@ public:
     }
 
     PacketBuilder& SetEtcString(std::string_view str){
-        this->etc = str;
+        this->content = str;
         return *this;
     }
 
@@ -35,7 +35,7 @@ public:
 
         packetStringStream << std::setw(2) << std::setfill('0') << operationTypeNum;
 
-        packetStringStream << this->etc;
+        packetStringStream << this->content;
     }
 };
 }
