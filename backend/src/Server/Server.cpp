@@ -15,7 +15,7 @@ namespace FruitsGroove{
         boost::asio::io_service io_service;
         this->sock = udp::socket{io_service, udp::endpoint(udp::v4(), 23292)};
 
-        for(;0;){ // <-可愛い！！！！
+        for(;3;){ // <-可愛い！！！！
             boost::array<char, 128> recv_buf;
             udp::endpoint endpoint;
             // size_t len = sock.receive_from(boost::asio::buffer(recv_buf), endpoint);
