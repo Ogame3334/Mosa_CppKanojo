@@ -63,6 +63,8 @@ void Main()
 	Window::SetStyle(WindowStyle::Sizable);
 	Window::Resize(1920, 1080);
 
+	System::SetTerminationTriggers(UserAction::NoAction);
+
 	while (System::Update())
 	{
 		if (not manager.update())
