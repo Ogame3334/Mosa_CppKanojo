@@ -14,18 +14,17 @@ namespace FruitsGroove{
         boost::asio::io_service io_service;
         udp::socket sock(io_service, udp::endpoint(udp::v4(), 23292));
 
-        std::cout << "動き始めたよ！！" << std::endl;
-
         for(;3;){ // <-可愛い！！！！
             boost::array<char, 128> recv_buf;
             udp::endpoint endpoint;
-            size_t len = sock.receive_from(boost::asio::buffer(recv_buf), endpoint);
+            // size_t len = sock.receive_from(boost::asio::buffer(recv_buf), endpoint);
 
-            std::cout.write(recv_buf.data(), len);
+            // std::cout.write(recv_buf.data(), len);
+            this->handerInstance->Handle(std::string(recv_buf.data()));
         }
     }
 
     void Server::Stop(){
-
+        
     }
 }
