@@ -9,6 +9,7 @@ project(MosaBackend)
 # TODO ソースファイルを追加
 set(proj_src
 	src/main.cpp
+    src/Server/Server.cpp
 )
 
 # add executable
