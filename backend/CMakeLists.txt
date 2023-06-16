@@ -71,3 +71,15 @@ target_compile_options(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC
 # CTestへ単体テストを登録
 include(GoogleTest)
 gtest_discover_tests(${UNIT_TEST_EXECUTABLE_NAME})
+
+
+# spdlog導入
+FetchContent_Declare(
+    spdlog 
+    GIT_REPOSITORY https://github.com/gabime/spdlog.git
+    GIT_TAG v1.x
+)
+
+FetchContent_MakeAvailable(spdlog)
+target_link_libraries(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC spdlog)
+target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC spdlog::spdlog_header_only)
