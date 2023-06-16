@@ -20,13 +20,13 @@ public:
         return *this;
     }
 
-    PacketBuilder& SetEtcString(std::string_view str){
+    PacketBuilder& SetContent(std::string_view str){
         this->content = str;
         return *this;
     }
 
     std::string Build(){
-        std::stringstream packetStringStream{""};
+        std::stringstream packetStringStream{};
         
         auto operationTypeNum = static_cast<int>(this->opType);
         if(operationTypeNum > 99){
@@ -36,6 +36,7 @@ public:
         packetStringStream << std::setw(2) << std::setfill('0') << operationTypeNum;
 
         packetStringStream << this->content;
+        return packetStringStream.str();
     }
 };
 }
