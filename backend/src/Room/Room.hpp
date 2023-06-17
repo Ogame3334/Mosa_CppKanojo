@@ -5,7 +5,6 @@
 #include <spdlog/spdlog.h>
 #include <thread>
 #include <string>
-#include "src/User/User.hpp"
 
 namespace FruitsGroove{
 class Room{

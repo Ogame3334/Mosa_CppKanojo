@@ -1,5 +1,4 @@
 #include "src/Room/Room.hpp"
-#include "src/Connection/Connection.hpp"
 #include "src/Protocol/PacketParser.hpp"
 #include "src/Handler/PacketHandler.hpp"
 
