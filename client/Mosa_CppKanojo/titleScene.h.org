@@ -1,0 +1,46 @@
+﻿#pragma once
+# include <Siv3D.hpp>
+
+using App = SceneManager<String>;
+
+struct menu_items_t {
+	String itemName;
+	Point position;
+	String nextScene;
+};
+
+// タイトルシーン
+class Title : public App::Scene
+{
+	static const int itemNum = 3;	// 項目数
+	menu_items_t items[itemNum] = {	// 表示するボタン名と座標、遷移先シーン
+		{U"ゲームスタート", Point(650,500), U"Game"},
+		{U"オプション", Point(650,550),U"Option"},
+		{U"ゲームをやめる",Point(650,600),U"Exit"}
+	};
+
+public:
+
+	// コンストラクタ
+	Title(const InitData& init)
+		: IScene{ init }{}
+
+	void update() override
+	{
+		// ボタンの表示
+		for (int i = 0; i < itemNum; i++) {
+			if (SimpleGUI::Button(this->items[i].itemName, Vec2(this->items[i].position.x, this->items[i].position.y))) {
+				changeScene(this->items[i].nextScene);	// 各メニュー項目に対応したシーンに遷移
+			}
+		}
+	}
+
+	void draw() const override
+	{
+		Scene::SetBackground(ColorF{ 0.3, 0.4, 0.5 });
+
+		FontAsset(U"TitleFont")(U"My Game").drawAt(750, 100);
+
+		Circle{ Cursor::Pos(), 50 }.draw(Palette::Orange);
+	}
+};
