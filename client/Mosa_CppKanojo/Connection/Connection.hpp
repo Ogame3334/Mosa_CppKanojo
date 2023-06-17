@@ -1,4 +1,6 @@
-﻿#include <Siv3D.hpp>
+﻿#pragma once
+
+#include <Siv3D.hpp>
 
 #include "../Protocol/OperationType.hpp"
 #include "../Protocol/PacketBuilder.hpp"
