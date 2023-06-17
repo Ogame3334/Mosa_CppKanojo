@@ -10,7 +10,7 @@ namespace FruitsGroove{
     private:
         HandlerPtr handerInstance;
         boost::asio::io_service io_service;
-        boost::asio::ip::udp::socket sock;
+        boost::asio::ip::tcp::socket sock;
     public:
         Server() = delete;
         Server(HandlerPtr instance);

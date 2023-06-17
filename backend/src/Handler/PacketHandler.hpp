@@ -5,8 +5,7 @@
 namespace FruitsGroove{
     class PacketHandler: public HandlerBase{
     public:
-        void Handle(std::string_view data) override{
-            
+        void Handle(std::unique_ptr<boost::asio::ip::tcp::socket> socket) override{
         };
     };
 }

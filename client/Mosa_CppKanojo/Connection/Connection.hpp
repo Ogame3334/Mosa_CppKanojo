@@ -4,6 +4,7 @@
 
 #include "../Protocol/OperationType.hpp"
 #include "../Protocol/PacketBuilder.hpp"
+#include "../Protocol/Packet.hpp"
 
 namespace FruitsGroove {
 	namespace Connection {
@@ -16,6 +17,7 @@ namespace FruitsGroove {
 		public:
 			ServerConnection() {}
 			bool sendPacket(OperationType type, StringView content);
+			Packet recievePacket();
 		};
 	}
 }
