@@ -31,6 +31,7 @@ void MdspeedScene::update() {
 	if (prev_loopCount != data.audio.loopCount() || decideButton.update()) {
 		data.audio.stop();
 		currentTime = 0;
+		frontNoteId = 0;
 		notes.clear();
         loadNotes();
 		data.audio.play();
