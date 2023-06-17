@@ -4,6 +4,7 @@
 #include <boost/asio.hpp>
 #include <spdlog/spdlog.h>
 #include <thread>
+#include <string>
 #include "src/User/User.hpp"
 // #include "src/Handler/PacketHandler.hpp"
 
@@ -13,8 +14,7 @@ class Room{
 private:
     std::array<SocketPtr, 2> socketArray;
     std::array<std::thread, 2> threadArray;
-    // PacketHandler packetHandler{};
-    // 二つの曲名
+    std::array<std::string, 2> songsArray;
     void SocketDataProcessor(SocketPtr& dest_socket, SocketPtr& source_socket);
 public:
     Room() = delete;
