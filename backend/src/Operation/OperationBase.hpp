@@ -1,6 +1,11 @@
 #pragma once
 #include "src/Protocol/OperationType.hpp"
+#include "src/Protocol/Packet.hpp"
 #include <string_view>
+#include <boost/asio.hpp>
+
+namespace asio = boost::asio;
+using asio::ip::tcp;
 
 namespace FruitsGroove{
 
@@ -15,7 +20,7 @@ public:
         return this->opType;
     }
 
-    virtual void Execute(std::string_view) = 0;
+    virtual void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket) = 0;
 };
 
 }
