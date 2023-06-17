@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 
 namespace FruitsGroove{
 enum class OperationType{
     None,
-    MatchingRequest,
     WaitForPlayer,
-    MatchingComplete,
+	MatchingError,
+    MatchingComplete, 
     NoticeIDAndName,
     NoticeRoomCreated,
     SelectedSong,
