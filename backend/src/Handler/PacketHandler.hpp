@@ -13,10 +13,9 @@ namespace FruitsGroove{
         void Handle(Packet packet, std::unique_ptr<tcp::socket>& socket, Room& room) override{
             for(auto& op: this->operationArray){
                 if(packet.op == op->GetOperationType()){
-                    op->Execute(packet);
+                    op->Execute(packet, socket, room);
                 }
             }
-
         };
     };
 }
