@@ -1,5 +1,5 @@
 ﻿# include <Siv3D.hpp>
-
+# include"GameScene.h"
 using App = SceneManager<String>;
 
 // タイトルシーン
@@ -17,7 +17,7 @@ public:
 	// 更新関数（オプション）
 	void update() override
 	{
-
+		if (MouseL.down()) changeScene(U"Game");
 	}
 
 	// 描画関数（オプション）
@@ -34,12 +34,16 @@ public:
 void Main()
 {
 	FontAsset::Register(U"TitleFont", 60, Typeface::Heavy);
-
+	//Audio data = Audio{U"C:\\Users\\hmits\\source\\repos\\Mosa_CppKanojo\\client\\CassisGrape.mp3"};
 	// シーンマネージャーを作成
+	Window::SetStyle(WindowStyle::Sizable);
+	Window::Resize(1920, 1080);
+
 	App manager;
 
 	// タイトルシーン（名前は "Title"）を登録
 	manager.add<Title>(U"Title");
+	manager.add<GameScene>(U"Game");
 
 	while (System::Update())
 	{
