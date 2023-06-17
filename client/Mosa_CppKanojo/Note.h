@@ -4,7 +4,7 @@
 class Note: public NoteBase {
 public:
 	Note(class GameScene *scene, uint32 timing, Texture* texture);
-	JUDGE hit(int32 delta) override;
+	JUDGE hit(int32 delta, enum Lane lane) override;
 private:
 };
 
