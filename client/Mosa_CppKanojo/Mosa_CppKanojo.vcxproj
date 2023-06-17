@@ -115,6 +115,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EndNote.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="LongNote.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -320,6 +321,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="EndNote.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Judge.h" />
     <ClInclude Include="LongNote.h" />
