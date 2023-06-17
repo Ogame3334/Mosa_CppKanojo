@@ -10,12 +10,10 @@ namespace FruitsGroove{
     class PacketHandler: public HandlerBase{
         std::vector<OperationBase*> operationArray;
     public:
-        void Handle(std::string_view rawData) override{
-            auto packet = ParsePacket(rawData);
-
+        void Handle(Packet packet, std::unique_ptr<tcp::socket>& socket, Room& room) override{
             for(auto& op: this->operationArray){
                 if(packet.op == op->GetOperationType()){
-                    op->Execute(rawData);
+                    op->Execute(packet);
                 }
             }
 

@@ -5,7 +5,7 @@
 #include <spdlog/spdlog.h>
 #include <thread>
 #include "src/User/User.hpp"
-#include "src/Handler/PacketHandler.hpp"
+// #include "src/Handler/PacketHandler.hpp"
 
 namespace FruitsGroove{
 class Room{
@@ -13,7 +13,7 @@ class Room{
 private:
     std::array<SocketPtr, 2> socketArray;
     std::array<std::thread, 2> threadArray;
-    PacketHandler packetHandler{};
+    // PacketHandler packetHandler{};
     // 二つの曲名
     void SocketDataProcessor(SocketPtr dest_socket, SocketPtr source_socket);
 public:

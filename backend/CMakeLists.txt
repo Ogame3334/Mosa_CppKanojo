@@ -14,6 +14,7 @@ set(proj_src
     src/Room/RoomManager.cpp
     src/Room/Room.cpp
     src/Protocol/PacketParser.cpp
+    src/Protocol/PacketBuilder.cpp
 )
 
 # add executable

@@ -1,6 +1,7 @@
 #pragma once
 #include "src/Protocol/OperationType.hpp"
 #include <string_view>
+#include "src/Protocol/Packet.hpp"
 
 namespace FruitsGroove{
 
@@ -15,7 +16,7 @@ public:
         return this->opType;
     }
 
-    virtual void Execute(std::string_view) = 0;
+    virtual void Execute(Packet packet) = 0;
 };
 
 }

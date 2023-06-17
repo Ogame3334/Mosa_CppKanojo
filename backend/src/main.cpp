@@ -8,7 +8,7 @@
 int main(){
     FruitsGroove::Server server{std::make_unique<FruitsGroove::TestHandler>()};
 
-    server.Start();
+    server.Run();
 
     std::cout << "Hello Mosa cup!" << std::endl;
 }
