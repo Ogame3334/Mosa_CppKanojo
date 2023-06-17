@@ -5,7 +5,7 @@ LongNote::LongNote(GameScene* scene, uint32 start, uint32 end, Texture* texture)
 	NoteBase(scene, start, texture)
 {}
 
-JUDGE LongNote::hit(int32 delta) {
+JUDGE LongNote::hit(int32 delta, Lane lane) {
 	return JUDGE::excellent;
 }
 

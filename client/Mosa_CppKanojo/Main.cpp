@@ -4,7 +4,7 @@
 void Main()
 {
 	FontAsset::Register(U"TitleFont", 60, Typeface::Heavy);
-
+	FontAsset::Register(U"CombFont", 200, Typeface::Heavy);
 	// シーンマネージャーを作成
 	App manager;
 

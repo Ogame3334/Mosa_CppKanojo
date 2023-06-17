@@ -3,6 +3,6 @@
 
 class LongNote : public NoteBase {
 	LongNote(class GameScene* scene, uint32 start, uint32 end, Texture* texture);
-	JUDGE hit(int32 delta) override;
+	JUDGE hit(int32 delta, enum Lane lane) override;
 	JUDGE hitEnd(int32 delta) override;
 };
