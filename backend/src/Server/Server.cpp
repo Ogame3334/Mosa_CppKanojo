@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "src/Handler/HandlerProcessExecuter.hpp"
+#include "src/Room/Room.hpp"
 #include <iostream>
 #include <sstream>
 #include <boost/asio.hpp>
@@ -37,12 +38,20 @@ namespace FruitsGroove{
             auto endpoint = socket->remote_endpoint();
             spdlog::info("accepted from {}:{}", endpoint.address().to_string(), endpoint.port());
 
-            handlerExecuter.AddTask(std::make_unique<std::thread>(
-                [&](){
-                }
-            ));
+            spdlog::info("accepter start");
+            auto socket2 = std::make_unique<tcp::socket>(this->io_service);
 
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            acc.accept(*socket2, error);
+
+            if(error){
+                spdlog::warn("tcp accepter: accept failed");
+                continue;
+            }
+            endpoint = socket2->remote_endpoint();
+            spdlog::info("accepted from {}:{}", endpoint.address().to_string(), endpoint.port());
+
+            Room room{ std::array<std::unique_ptr<tcp::socket>, 2>{std::move(socket), std::move(socket2)} };
+
 
             //// メッセージ受信
             //asio::streambuf receive_buffer;

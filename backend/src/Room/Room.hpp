@@ -1,11 +1,31 @@
+//#include <memory>
+//#include <boost/asio.hpp>
+//#include <array>
+
+//namespace asio = boost::asio;
+//using asio::ip::tcp;
+
+//namespace FruitsGroove{
+    //class Room{
+        //std:
+    //public:
+        //Room(std::unique_ptr<tcp::socket>s1, std::unique_ptr<tcp::socket>s2){
+
+        //}
+
+
+
+    //};
+
+//}
+
 #pragma once
+#include "src/Handler/PacketHandler.hpp"
 #include <array>
 #include <string_view>
 #include <boost/asio.hpp>
 #include <spdlog/spdlog.h>
 #include <thread>
-#include "src/User/User.hpp"
-#include "src/Handler/PacketHandler.hpp"
 
 namespace FruitsGroove{
 class Room{
@@ -18,9 +38,13 @@ private:
     void SocketDataProcessor(SocketPtr dest_socket, SocketPtr source_socket);
 public:
     Room() = delete;
-    Room(std::array<SocketPtr, 2> sockets);
+    Room(std::array<SocketPtr, 2>&& socketArray):
+        socketArray(std::move(socketArray))
+        {}
 };
 }
+//ここまで
+
 // namespace asio = boost::asio;
 // using asio::ip::tcp;
 
