@@ -24,11 +24,13 @@ namespace FruitsGroove {
 			return couldConnect;
 		}
 
-		Packet ServerConnection::recievePacket() {
+		bool ServerConnection::recievePacket(Packet& packet) {
 			const char* recievedPacket;
-			while (client.read(recievedPacket));
-			Packet packet = ParsePacket(recievedPacket);
-			return packet;
+			if(client.read(recievedPacket)){
+				return false;
+			}
+			packet = ParsePacket(recievedPacket);
+			return true;
 		}
 	}
 }
