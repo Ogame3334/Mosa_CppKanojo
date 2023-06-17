@@ -9,7 +9,7 @@
 int main(){
     FruitsGroove::Server server{std::make_unique<FruitsGroove::PacketHandler>()};
 
-    server.Start();
+    server.Run();
 
     std::cout << "Hello Mosa cup!" << std::endl;
 }

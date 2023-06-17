@@ -19,7 +19,7 @@ class TestHandler: public HandlerBase{
         os(std::cout)
     {}
 
-    void Handle(std::string_view rawData) override{
+    void Handle(Packet packet, std::unique_ptr<tcp::socket>& socket, Room& room) override{
         //while(true){
             //boost::system::error_code error;
             //asio::streambuf receive_buffer;

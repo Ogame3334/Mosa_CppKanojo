@@ -10,10 +10,10 @@ project(MosaBackend)
 set(proj_src
 	src/main.cpp
     src/Server/Server.cpp
-    src/Connection/Connection.cpp
     src/Room/RoomManager.cpp
     src/Room/Room.cpp
     src/Protocol/PacketParser.cpp
+    src/Protocol/PacketBuilder.cpp
 )
 
 # add executable

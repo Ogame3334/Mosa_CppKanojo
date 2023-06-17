@@ -24,7 +24,7 @@ namespace FruitsGroove {
 			return couldConnect;
 		}
 
-		bool ServerConnection::recievePacket(Packet& packet) {
+		bool ServerConnection::receivePacket(Packet& packet) {
 			const char* recievedPacket;
 			if(client.read(recievedPacket)){
 				return false;
