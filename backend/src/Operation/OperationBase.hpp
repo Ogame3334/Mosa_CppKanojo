@@ -1,6 +1,7 @@
 #pragma once
 #include "src/Protocol/OperationType.hpp"
 #include "src/Protocol/Packet.hpp"
+#include "src/Room/Room.hpp"
 #include <string_view>
 #include <boost/asio.hpp>
 
@@ -20,7 +21,7 @@ public:
         return this->opType;
     }
 
-    virtual void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket) = 0;
+    virtual void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket, Room& room) = 0;
 };
 
 }

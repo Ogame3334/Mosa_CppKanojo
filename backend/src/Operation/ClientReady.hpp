@@ -3,17 +3,18 @@
 #include "src/Protocol/PacketBuilder.hpp"
 #include <mutex>
 
-inline std::mutex playerCountMtx;
-inline int readyPlayerCount = 0;
 
 namespace FruitsGroove{
+    inline std::mutex playerCountMtx;
+    inline int readyPlayerCount = 0;
+    
 class ClientReady: public OperationBase{
     public:
     ClientReady():
         OperationBase(OperationType::ClientReady)
     {}
 
-    void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket) override{
+    void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket, Room& room) override{
         {
             std::lock_guard<std::mutex> lock(playerCountMtx);
             readyPlayerCount += 1;

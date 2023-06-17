@@ -9,7 +9,7 @@ class CurrentScore: public OperationBase{
         OperationBase(OperationType::CurrentScore)
     {}
 
-    void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket) override{
+    void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket, Room& room) override{
         PacketBuilder pb;
         auto payload = pb.SetOperation(packet.op).SetContent(packet.content).Build();
         boost::system::error_code error;

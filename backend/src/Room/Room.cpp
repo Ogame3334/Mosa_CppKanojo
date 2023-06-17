@@ -3,8 +3,8 @@
 #include "src/Handler/PacketHandler.hpp"
 
 namespace FruitsGroove{
-    Room::Room(std::array<SocketPtr, 2> sockets){
-        this->socketArray = std::move(sockets);
+    Room::Room(std::array<SocketPtr, 2>&& sockets):
+        socketArray(std::move(sockets)){
         this->threadArray[0] = std::thread([&](){this->SocketDataProcessor(this->socketArray[0], this->socketArray[1]);});
         this->threadArray[1] = std::thread([&](){this->SocketDataProcessor(this->socketArray[1], this->socketArray[0]);});
     }

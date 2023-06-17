@@ -3,17 +3,18 @@
 #include "src/Protocol/PacketBuilder.hpp"
 #include <mutex>
 
-inline std::mutex playerCountMtx2;
-inline int readyPlayerCount2 = 0;
 
 namespace FruitsGroove{
+    inline std::mutex playerCountMtx2;
+    inline int readyPlayerCount2 = 0;
+    
 class GameEnd: public OperationBase{
     public:
     GameEnd():
         OperationBase(OperationType::GameEnd)
     {}
 
-    void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket) override{
+    void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket, Room& room) override{
         {
             std::lock_guard<std::mutex> lock(playerCountMtx2);
             readyPlayerCount2 += 1;

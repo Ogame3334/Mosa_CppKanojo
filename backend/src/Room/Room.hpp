@@ -20,7 +20,6 @@
 //}
 
 #pragma once
-#include "src/Handler/PacketHandler.hpp"
 #include <array>
 #include <string_view>
 #include <boost/asio.hpp>
@@ -34,12 +33,10 @@ class Room{
 private:
     std::array<SocketPtr, 2> socketArray;
     std::array<std::thread, 2> threadArray;
-    std::array<std::string, 2> songsArray;
     void SocketDataProcessor(SocketPtr& dest_socket, SocketPtr& source_socket);
 public:
+    std::vector<std::string> songsArray;
     Room() = delete;
-    Room(std::array<SocketPtr, 2>&& socketArray):
-        socketArray(std::move(socketArray))
-        {}
+    Room(std::array<SocketPtr, 2>&& sockets);
 };
 }

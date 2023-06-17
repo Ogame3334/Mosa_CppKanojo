@@ -5,31 +5,32 @@
 #include <vector>
 #include <thread>
 #include <spdlog/spdlog.h>
+#include <algorithm>
 
-inline std::mutex songNameArraymtx;
-inline std::vector<std::string> songNameArray;
 
 namespace FruitsGroove{
+    inline std::mutex songNameArraymtx;
+    
 class SelectSong: public OperationBase{
     public:
     SelectSong():
         OperationBase(OperationType::SelectedSong)
     {}
 
-    void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket) override{
+    void Execute(const Packet& packet, std::unique_ptr<tcp::socket>& socket, Room& room) override{
         spdlog::info("select song");
         {
             std::lock_guard<std::mutex> lock(songNameArraymtx);
-            songNameArray.emplace_back(packet.content);
+            room.songsArray.emplace_back(packet.content);
             boost::system::error_code error;
             asio::write(*socket, asio::buffer("07"), error);
         }
-        while(songNameArray.size() < 2){
+        while(room.songsArray.size() < 2){
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
-        //TODO shuffle
-            boost::system::error_code error;
-        asio::write(*socket, asio::buffer("08" + songNameArray[0]), error);
+        std::random_shuffle(room.songsArray.begin(), room.songsArray.end()); //TODO shuffle 多分できた
+        boost::system::error_code error;
+        asio::write(*socket, asio::buffer("08" + room.songsArray[0]), error);
     }
 };
 }
