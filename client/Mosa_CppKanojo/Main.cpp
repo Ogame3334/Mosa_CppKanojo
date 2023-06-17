@@ -1,8 +1,5 @@
 ﻿# include <Siv3D.hpp>
-# include "Scenes/titleScene.h"
-# include "Scenes/choiceScene.h"
-
-using App = SceneManager<String>;
+# include "Scenes/sceneManager.h"
 
 // ゲームシーン
 class Game : public App::Scene
@@ -62,6 +59,7 @@ void Main()
 	// 画面サイズを1920 x 1080に変更
 	Window::SetStyle(WindowStyle::Sizable);
 	Window::Resize(1920, 1080);
+	Window::SetFullscreen(true);
 
 	System::SetTerminationTriggers(UserAction::NoAction);
 
