@@ -19,7 +19,7 @@ class TestHandler: public HandlerBase{
         os(std::cout)
     {}
 
-    void Handle(std::string_view rawData) override{
+    void Handle(std::string_view rawData, Room&) override{
         //while(true){
             //boost::system::error_code error;
             //asio::streambuf receive_buffer;
