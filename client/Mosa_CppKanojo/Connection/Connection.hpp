@@ -17,7 +17,7 @@ namespace FruitsGroove {
 		public:
 			ServerConnection() {}
 			bool sendPacket(OperationType type, StringView content);
-			Packet receivePacket();
+			bool receivePacket(Packet& packet);
 		};
 	}
 }
