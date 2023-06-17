@@ -8,13 +8,13 @@
 
 namespace FruitsGroove{
     class PacketHandler: public HandlerBase{
-        std::vector<OperationBase*> operationArray;
+        std::vector<std::shared_ptr<OperationBase>> operationArray;
     public:
         void Handle(std::string_view rawData) override{
             auto packet = ParsePacket(rawData);
 
             for(auto& op: this->operationArray){
-                if(packet.op == op->GetOperationType()){
+                if(op->IsMyOperation(packet.op)){
                     op->Execute(rawData);
                 }
             }
