@@ -1,5 +1,5 @@
-﻿#pragma once
-#include <Siv3D.hpp>
+﻿# pragma once
+# include <Siv3D.hpp>
 
 namespace ogm {
 	template<typename T>
@@ -28,7 +28,7 @@ namespace ogm {
 		Color defaultOverColor = Color{ 0, 0, 0, 0 };
 		Color mouseOverOverColor = Color{ 0, 0, 0, 50 };
 		Color pressedOverColor = Color{ 0, 0, 0, 100 };
-		Point outlineWidth{0, 1};
+		Point outlineWidth{ 0, 1 };
 		bool isTexture = false;
 		Texture texture{};
 		Point texturePos{ 0, 0 };
@@ -104,7 +104,7 @@ namespace ogm {
 				this->clickableRange.asPolygon().toBuffer2D(Arg::center(this->clickableRange.center() + this->texturePos), this->texture.size())
 					.draw(this->texture);
 			}
-			if(this->isTexture) this->clickableRange.draw(this->nowOverColor);
+			if (this->isTexture) this->clickableRange.draw(this->nowOverColor);
 			this->clickableRange.drawFrame(this->outlineWidth.x, this->outlineWidth.y, this->nowOutlineColor);
 			font(this->buttonTitle).drawAt(this->clickableRange.center(), Palette::Black);
 		}
@@ -229,9 +229,9 @@ namespace ogm {
 		Color mouseOverOutlineColor = Palette::Black;
 		Color pressedOutlineColor = Palette::Black;
 		Color nowOverColor = Color{};
-		Color defaultOverColor = Color{0, 0, 0, 0};
-		Color mouseOverOverColor = Color{0, 0, 0, 50};
-		Color pressedOverColor = Color{0, 0, 0, 100};
+		Color defaultOverColor = Color{ 0, 0, 0, 0 };
+		Color mouseOverOverColor = Color{ 0, 0, 0, 50 };
+		Color pressedOverColor = Color{ 0, 0, 0, 100 };
 		Point outlineWidth{ 0, 1 };
 		bool isTexture = false;
 		Texture texture{};
