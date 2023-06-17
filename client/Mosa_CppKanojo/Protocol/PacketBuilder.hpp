@@ -13,30 +13,12 @@ private:
     std::string content;
     
 public:
-    PacketBuilder(){};
+    PacketBuilder();
 
-    PacketBuilder& SetOperation(OperationType op){
-        this->opType = op;
-        return *this;
-    }
+    PacketBuilder& SetOperation(OperationType op);
 
-    PacketBuilder& SetContent(std::string_view str){
-        this->content = str;
-        return *this;
-    }
+    PacketBuilder& SetContent(std::string_view str);
 
-    std::string Build(){
-        std::stringstream packetStringStream{};
-        
-        auto operationTypeNum = static_cast<int>(this->opType);
-        if(operationTypeNum > 99){
-            throw std::logic_error{"operationは99を超えないはずです"};
-        }
-
-        packetStringStream << std::setw(2) << std::setfill('0') << operationTypeNum;
-
-        packetStringStream << this->content;
-        return packetStringStream.str();
-    }
+    std::string Build();
 };
 }

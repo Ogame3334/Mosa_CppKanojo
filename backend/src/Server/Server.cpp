@@ -7,6 +7,12 @@
 #include <boost/array.hpp>
 #include <spdlog/spdlog.h>
 #include <thread>
+#include "src/Operation/NoticeIDAndName.hpp"
+#include "src/Operation/SelectSong.hpp"
+#include "src/Operation/ClientReady.hpp"
+#include "src/Operation/CurrentCombo.hpp"
+#include "src/Operation/CurrentScore.hpp"
+#include "src/Operation/GameEnd.hpp"
 
 namespace asio = boost::asio;
 using boost::asio::ip::tcp;
@@ -37,6 +43,7 @@ namespace FruitsGroove{
             }
             auto endpoint = socket->remote_endpoint();
             spdlog::info("accepted from {}:{}", endpoint.address().to_string(), endpoint.port());
+            asio::write(*socket, asio::buffer("01"), error);
 
             spdlog::info("accepter start");
             auto socket2 = std::make_unique<tcp::socket>(this->io_service);
@@ -49,8 +56,44 @@ namespace FruitsGroove{
             }
             endpoint = socket2->remote_endpoint();
             spdlog::info("accepted from {}:{}", endpoint.address().to_string(), endpoint.port());
+            PacketHandler packetHandler;
+            asio::write(*socket, asio::buffer("03"), error);
+            asio::write(*socket2, asio::buffer("03"), error);
+            asio::write(*socket, asio::buffer("05"), error);
+            asio::write(*socket2, asio::buffer("05"), error);
 
-            Room room{ std::array<std::unique_ptr<tcp::socket>, 2>{std::move(socket), std::move(socket2)} };
+            packetHandler.AddOperation(std::make_shared<ClientReady>());
+            packetHandler.AddOperation(std::make_shared<CurrentCombo>());
+            packetHandler.AddOperation(std::make_shared<CurrentScore>());
+            packetHandler.AddOperation(std::make_shared<GameEnd>());
+            packetHandler.AddOperation(std::make_shared<NoticeIDAndName>());
+            packetHandler.AddOperation(std::make_shared<SelectSong>());
+
+            auto socketConnectionFunc = [&](std::unique_ptr<tcp::socket>& s1, std::unique_ptr<tcp::socket>& s2){
+                while(true){
+                        // メッセージ受信
+                    asio::streambuf receive_buffer;
+                    boost::system::error_code error;
+                    asio::read(*s1, receive_buffer, asio::transfer_at_least(1), error);
+
+                    if (error && error != asio::error::eof) {
+                        continue;
+                    }
+                    const char* data = asio::buffer_cast<const char*>(receive_buffer.data());
+                    auto packet = ParsePacket(data);
+                    packetHandler.Handle(packet, s2);
+                    }
+                };
+            
+            auto th1 = std::thread([&](){
+                socketConnectionFunc(socket, socket2);
+            });
+            auto th2 = std::thread([&](){
+                socketConnectionFunc(socket2, socket);
+            });
+            th1.join();
+
+
 
 
             //// メッセージ受信

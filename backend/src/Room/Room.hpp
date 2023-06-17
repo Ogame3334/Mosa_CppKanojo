@@ -21,6 +21,7 @@
 
 #pragma once
 #include "src/Handler/PacketHandler.hpp"
+#include "src/Protocol/PacketParser.hpp"
 #include <array>
 #include <string_view>
 #include <boost/asio.hpp>
@@ -35,12 +36,9 @@ private:
     std::array<std::thread, 2> threadArray;
     PacketHandler packetHandler{};
     // 二つの曲名
-    void SocketDataProcessor(SocketPtr dest_socket, SocketPtr source_socket);
+    void SocketDataProcessor(SocketPtr& dest_socket, SocketPtr& source_socket);
 public:
     Room() = delete;
-    Room(std::array<SocketPtr, 2>&& socketArray):
-        socketArray(std::move(socketArray))
-        {}
 };
 }
 //ここまで

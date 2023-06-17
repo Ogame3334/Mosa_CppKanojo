@@ -15,8 +15,8 @@ enum class OperationType{
     GameStart,
     CurrentScore, 
     CurrentCombo,
-    GameEnd, 
-    ResultScore,
+    GameEnd, // ここにプレイヤーのスコアが乗ってくることを想定
+    ResultScore, //これに相手のスコアを乗せて返す
     OperationCount, // 一番最後に置くこと!!! OperationTypeの数が入る 必要なときもあるだろう
     };
 }

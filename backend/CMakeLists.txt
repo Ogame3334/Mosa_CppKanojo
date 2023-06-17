@@ -11,9 +11,10 @@ set(proj_src
 	src/main.cpp
     src/Server/Server.cpp
     src/Connection/Connection.cpp
-    src/Room/RoomManager.cpp
+#src/Room/RoomManager.cpp
     src/Room/Room.cpp
     src/Protocol/PacketParser.cpp
+    src/Protocol/PacketBuilder.cpp
 )
 
 # add executable
@@ -39,18 +40,18 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC "-pthread")
 
-# GoogleTest ここから
-# GoogleTestをダウンロード
+# # GoogleTest ここから
+# # GoogleTestをダウンロード
 include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.0.zip
-)
+# FetchContent_Declare(
+  # googletest
+  # URL https://github.com/google/googletest/archive/refs/tags/release-1.12.0.zip
+# )
 
-# googletestをターゲットとして使えるようにする
-FetchContent_MakeAvailable(googletest)
+# # googletestをターゲットとして使えるようにする
+# FetchContent_MakeAvailable(googletest)
 
-enable_testing()
+# enable_testing()
 
 # # TODO 単体テスト名をセット
 # set(UNIT_TEST_EXECUTABLE_NAME
@@ -86,4 +87,4 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(spdlog)
 # target_link_libraries(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC spdlog)
-target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC spdlog::spdlog_header_only)
+target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC spdlog::spdlog)

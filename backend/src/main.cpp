@@ -2,8 +2,8 @@
 #include <boost/asio.hpp>
 #include <memory>
 
-#include "./Server/Server.hpp"
-#include "./Handler/TestHandler.hpp"
+#include "src/Server/Server.hpp"
+#include "src/Handler/TestHandler.hpp"
 #include "src/Handler/PacketHandler.hpp"
 
 int main(){
