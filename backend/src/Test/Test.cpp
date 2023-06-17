@@ -3,7 +3,6 @@
 #include "src/Protocol/Packet.hpp"
 #include "src/Protocol/PacketParser.hpp"
 #include "src/Protocol/PacketBuilder.hpp"
-#include "src/Room/RoomManager.hpp"
 #include <sstream>
 
 TEST(TEST_TEST, TestOfTest){

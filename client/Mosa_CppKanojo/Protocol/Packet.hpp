@@ -1,5 +1,6 @@
 #pragma once
 #include "OperationType.hpp"
+#include <string>
 
 namespace FruitsGroove{
 struct Packet{

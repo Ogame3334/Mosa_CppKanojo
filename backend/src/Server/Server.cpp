@@ -39,7 +39,6 @@ namespace FruitsGroove{
 
             handlerExecuter.AddTask(std::make_unique<std::thread>(
                 [&](){
-                    this->handerInstance->Handle(std::move(socket));
                 }
             ));
 

@@ -3,21 +3,24 @@
 #include <string_view>
 #include <boost/asio.hpp>
 #include <spdlog/spdlog.h>
+#include <thread>
 #include "src/User/User.hpp"
+#include "src/Handler/PacketHandler.hpp"
 
 namespace FruitsGroove{
 class Room{
     using SocketPtr = std::unique_ptr<boost::asio::ip::tcp::socket>;
 private:
-    int roomID;
-    std::array<User, 2> userArray;
+    std::array<SocketPtr, 2> socketArray;
+    std::array<std::thread, 2> threadArray;
+    PacketHandler packetHandler{};
+    // 二つの曲名
+    void SocketDataProcessor(SocketPtr dest_socket, SocketPtr source_socket);
 public:
     Room() = delete;
-    Room(int roomID, std::array<SocketPtr, 2> sockets);
+    Room(std::array<SocketPtr, 2> sockets);
 };
 }
-
-
 // namespace asio = boost::asio;
 // using asio::ip::tcp;
 

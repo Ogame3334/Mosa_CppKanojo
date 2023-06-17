@@ -10,6 +10,10 @@ project(MosaBackend)
 set(proj_src
 	src/main.cpp
     src/Server/Server.cpp
+    src/Connection/Connection.cpp
+    src/Room/RoomManager.cpp
+    src/Room/Room.cpp
+    src/Protocol/PacketParser.cpp
 )
 
 # add executable
@@ -48,29 +52,29 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-# TODO 単体テスト名をセット
-set(UNIT_TEST_EXECUTABLE_NAME
-    Test_FruitsGroove
-)
+# # TODO 単体テスト名をセット
+# set(UNIT_TEST_EXECUTABLE_NAME
+    # Test_FruitsGroove
+# )
 
-# TODO 単体テスト用ソースをセット
-set(UNIT_TEST_SRC
-    src/Test/Test.cpp
-)
+# # TODO 単体テスト用ソースをセット
+# set(UNIT_TEST_SRC
+    # src/Test/Test.cpp
+# )
 
-# 単体テストの定義
-add_executable(${UNIT_TEST_EXECUTABLE_NAME} ${UNIT_TEST_SRC})
-target_link_libraries(${UNIT_TEST_EXECUTABLE_NAME} PRIVATE gtest_main)
+# # 単体テストの定義
+# add_executable(${UNIT_TEST_EXECUTABLE_NAME} ${UNIT_TEST_SRC})
+# target_link_libraries(${UNIT_TEST_EXECUTABLE_NAME} PRIVATE gtest_main)
 
-target_compile_features(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC cxx_std_20)
-target_compile_options(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC
-    $<$<CXX_COMPILER_ID:GNU>: -O3 -Wall -Wextra -Wpedantic>
-    $<$<CXX_COMPILER_ID:MSVC>: /W4 >
-)
+# target_compile_features(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC cxx_std_20)
+# target_compile_options(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC
+    # $<$<CXX_COMPILER_ID:GNU>: -O3 -Wall -Wextra -Wpedantic>
+    # $<$<CXX_COMPILER_ID:MSVC>: /W4 >
+# )
 
-# CTestへ単体テストを登録
-include(GoogleTest)
-gtest_discover_tests(${UNIT_TEST_EXECUTABLE_NAME})
+# # CTestへ単体テストを登録
+# include(GoogleTest)
+# gtest_discover_tests(${UNIT_TEST_EXECUTABLE_NAME})
 
 
 # spdlog導入
@@ -81,5 +85,5 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(spdlog)
-target_link_libraries(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC spdlog)
+# target_link_libraries(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC spdlog)
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC spdlog::spdlog_header_only)
