@@ -15,7 +15,7 @@ private:
     std::array<std::thread, 2> threadArray;
     // PacketHandler packetHandler{};
     // 二つの曲名
-    void SocketDataProcessor(SocketPtr dest_socket, SocketPtr source_socket);
+    void SocketDataProcessor(SocketPtr& dest_socket, SocketPtr& source_socket);
 public:
     Room() = delete;
     Room(std::array<SocketPtr, 2> sockets);
