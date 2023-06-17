@@ -46,32 +46,18 @@ namespace FruitsGroove{
 
             if(!this->WaitForClient(acc, socket1)) continue;
 
-            // Connection::SendPacket(socket1, OperationType::WaitForPlayer, "");
             packetBuilder.SetOperation(OperationType::WaitForPlayer).SetContent("");
             msg = packetBuilder.Build();
             boost::asio::write(*socket1, boost::asio::buffer(msg), error);
             
             if(!this->WaitForClient(acc, socket2)) continue;
 
-
-            // Connection::SendPacket(socket1, OperationType::MatchingComplete, "");
             packetBuilder.SetOperation(OperationType::MatchingComplete).SetContent("");
             msg = packetBuilder.Build();
             boost::asio::write(*socket1, boost::asio::buffer(msg), error);
             boost::asio::write(*socket2, boost::asio::buffer(msg), error);
-            // Connection::SendPacket(socket2, OperationType::MatchingComplete, "");
 
             this->roomManager.createRoom(std::move(socket1), std::move(socket2));
-
-            //// メッセージ受信
-            //asio::streambuf receive_buffer;
-            //asio::read(*socket, receive_buffer, asio::transfer_at_least(1), error);
-
-            //if (error && error != asio::error::eof) {
-                //spdlog::warn("receive failed {}", error.message());
-            //}
-            //const char* data = asio::buffer_cast<const char*>(receive_buffer.data());
-            //spdlog::info(data);
         }
     }
 
