@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Siv3D.hpp>
 
 namespace ogm {
@@ -16,9 +16,11 @@ namespace ogm {
 		bool canClick = true;
 		CursorStyle onCursorStyle = CursorStyle::Hand;
 		String buttonTitle = U"Button";
+		Color nowBackColor = Palette::White;
 		Color defaultBackColor = Palette::White;
 		Color mouseOverBackColor = Palette::Lightgray;
 		Color pressedBackColor = Palette::Gray;
+		Color nowOutlineColor = Palette::Black;
 		Color defaultOutlineColor = Palette::Black;
 		Color mouseOverOutlineColor = Palette::Black;
 		Color pressedOutlineColor = Palette::Black;
@@ -62,26 +64,28 @@ namespace ogm {
 
 		bool update() {
 			bool out = false;
-			Color backColor = this->defaultBackColor;
-			Color outlineColor = this->defaultOutlineColor;
+			this->nowBackColor = this->defaultBackColor;
+			this->nowOutlineColor = this->defaultOutlineColor;
 			if (this->canClick and this->clickableRange.mouseOver()) {
-				backColor = this->mouseOverBackColor;
-				outlineColor = this->mouseOverOutlineColor;
+				this->nowBackColor = this->mouseOverBackColor;
+				this->nowOutlineColor = this->mouseOverOutlineColor;
 				Cursor::RequestStyle(this->onCursorStyle);
 				if (MouseL.pressed()) {
-					backColor = this->pressedBackColor;
-					outlineColor = this->pressedOutlineColor;
+					this->nowBackColor = this->pressedBackColor;
+					this->nowOutlineColor = this->pressedOutlineColor;
 				}
 				if (MouseL.up()) {
 					out = true;
 				}
 			}
 
-			this->clickableRange.draw(backColor);
-			this->clickableRange.drawFrame(this->outlineWidth.x, this->outlineWidth.y, outlineColor);
-			font(this->buttonTitle).drawAt(this->clickableRange.center(), Palette::Black);
-
 			return out;
+		}
+
+		void draw() const {
+			this->clickableRange.draw(this->nowBackColor);
+			this->clickableRange.drawFrame(this->outlineWidth.x, this->outlineWidth.y, this->nowOutlineColor);
+			font(this->buttonTitle).drawAt(this->clickableRange.center(), Palette::Black);
 		}
 	};
 
@@ -93,9 +97,11 @@ namespace ogm {
 		bool canClick = true;
 		CursorStyle onCursorStyle = CursorStyle::Hand;
 		String buttonTitle = U"Button";
+		Color nowBackColor = Palette::White;
 		Color defaultBackColor = Palette::White;
 		Color mouseOverBackColor = Palette::Lightgray;
 		Color pressedBackColor = Palette::Gray;
+		Color nowOutlineColor = Palette::Black;
 		Color defaultOutlineColor = Palette::Black;
 		Color mouseOverOutlineColor = Palette::Black;
 		Color pressedOutlineColor = Palette::Black;
@@ -132,30 +138,35 @@ namespace ogm {
 			this->mouseOverOutlineColor = mouseOverColor;
 			this->pressedOutlineColor = pressedColor;
 		}
+		void setOutlineColorsToTransparent() {
+			this->setOutlineColors(Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 0));
+		}
 		void setOutlineWidth(int inner, int outer) { this->outlineWidth = Point(inner, outer); }
 
 		bool update() {
 			bool out = false;
-			Color backColor = this->defaultBackColor;
-			Color outlineColor = this->defaultOutlineColor;
+			this->nowBackColor = this->defaultBackColor;
+			this->nowOutlineColor = this->defaultOutlineColor;
 			if (this->canClick and this->clickableRange.mouseOver()) {
-				backColor = this->mouseOverBackColor;
-				outlineColor = this->mouseOverOutlineColor;
+				this->nowBackColor = this->mouseOverBackColor;
+				this->nowOutlineColor = this->mouseOverOutlineColor;
 				Cursor::RequestStyle(this->onCursorStyle);
 				if (MouseL.pressed()) {
-					backColor = this->pressedBackColor;
-					outlineColor = this->pressedOutlineColor;
+					this->nowBackColor = this->pressedBackColor;
+					this->nowOutlineColor = this->pressedOutlineColor;
 				}
 				if (MouseL.up()) {
 					out = true;
 				}
 			}
 
-			this->clickableRange.draw(backColor);
-			this->clickableRange.drawFrame(this->outlineWidth.x + this->outlineWidth.y, outlineColor);
-			font(this->buttonTitle).drawAt(this->clickableRange.centroid(), Palette::Black);
-
 			return out;
+		}
+
+		void draw() const {
+			this->clickableRange.draw(this->nowBackColor);
+			this->clickableRange.drawFrame(this->outlineWidth.x + this->outlineWidth.y, this->nowOutlineColor);
+			font(this->buttonTitle).drawAt(this->clickableRange.centroid(), Palette::Black);
 		}
 	};
 
@@ -167,9 +178,11 @@ namespace ogm {
 		bool canClick = true;
 		CursorStyle onCursorStyle = CursorStyle::Hand;
 		String buttonTitle = U"Button";
+		Color nowBackColor = Palette::White;
 		Color defaultBackColor = Palette::White;
 		Color mouseOverBackColor = Palette::Lightgray;
 		Color pressedBackColor = Palette::Gray;
+		Color nowOutlineColor = Palette::Black;
 		Color defaultOutlineColor = Palette::Black;
 		Color mouseOverOutlineColor = Palette::Black;
 		Color pressedOutlineColor = Palette::Black;
@@ -206,30 +219,35 @@ namespace ogm {
 			this->mouseOverOutlineColor = mouseOverColor;
 			this->pressedOutlineColor = pressedColor;
 		}
+		void setOutlineColorsToTransparent() {
+			this->setOutlineColors(Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 0));
+		}
 		void setOutlineWidth(int inner, int outer) { this->outlineWidth = Point(inner, outer); }
 
 		bool update() {
 			bool out = false;
-			Color backColor = this->defaultBackColor;
-			Color outlineColor = this->defaultOutlineColor;
+			this->nowBackColor = this->defaultBackColor;
+			this->nowOutlineColor = this->defaultOutlineColor;
 			if (this->canClick and this->clickableRange.mouseOver()) {
-				backColor = this->mouseOverBackColor;
-				outlineColor = this->mouseOverOutlineColor;
+				this->nowBackColor = this->mouseOverBackColor;
+				this->nowOutlineColor = this->mouseOverOutlineColor;
 				Cursor::RequestStyle(this->onCursorStyle);
 				if (MouseL.pressed()) {
-					backColor = this->pressedBackColor;
-					outlineColor = this->pressedOutlineColor;
+					this->nowBackColor = this->pressedBackColor;
+					this->nowOutlineColor = this->pressedOutlineColor;
 				}
 				if (MouseL.up()) {
 					out = true;
 				}
 			}
 
-			this->clickableRange.draw(backColor);
-			this->clickableRange.drawFrame(this->outlineWidth.x + this->outlineWidth.y, outlineColor);
-			font(this->buttonTitle).drawAt(this->clickableRange.centroid(), Palette::Black);
-
 			return out;
+		}
+
+		void draw() const {
+			this->clickableRange.draw(this->nowBackColor);
+			this->clickableRange.drawFrame(this->outlineWidth.x + this->outlineWidth.y, this->nowOutlineColor);
+			font(this->buttonTitle).drawAt(this->clickableRange.centroid(), Palette::Black);
 		}
 	};
 }
