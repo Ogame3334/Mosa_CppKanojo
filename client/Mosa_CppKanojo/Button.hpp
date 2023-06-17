@@ -24,7 +24,14 @@ namespace ogm {
 		Color defaultOutlineColor = Palette::Black;
 		Color mouseOverOutlineColor = Palette::Black;
 		Color pressedOutlineColor = Palette::Black;
+		Color nowOverColor = Color{};
+		Color defaultOverColor = Color{ 0, 0, 0, 0 };
+		Color mouseOverOverColor = Color{ 0, 0, 0, 50 };
+		Color pressedOverColor = Color{ 0, 0, 0, 100 };
 		Point outlineWidth{0, 1};
+		bool isTexture = false;
+		Texture texture{};
+		Point texturePos{ 0, 0 };
 	public:
 		Button() {
 			this->clickableRange = CR();
@@ -61,18 +68,27 @@ namespace ogm {
 			this->setOutlineColors(Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 0));
 		}
 		void setOutlineWidth(int inner, int outer) { this->outlineWidth = Point(inner, outer); }
+		void setDefaultOverColor(Color color) { this->defaultOverColor = color; }
+		void setMouseOverOverColor(Color color) { this->mouseOverOverColor = color; }
+		void setPressedOverColor(Color color) { this->pressedOutlineColor = color; }
+		void setTexture(const Texture& tx) { this->texture = tx; }
+		void setIsTexture(bool it) { this->isTexture = it; }
+		void setTexturePos(const Point& pos) { this->texturePos = pos; }
 
 		bool update() {
 			bool out = false;
 			this->nowBackColor = this->defaultBackColor;
 			this->nowOutlineColor = this->defaultOutlineColor;
+			this->nowOverColor = this->defaultOverColor;
 			if (this->canClick and this->clickableRange.mouseOver()) {
 				this->nowBackColor = this->mouseOverBackColor;
 				this->nowOutlineColor = this->mouseOverOutlineColor;
+				this->nowOverColor = this->mouseOverOverColor;
 				Cursor::RequestStyle(this->onCursorStyle);
 				if (MouseL.pressed()) {
 					this->nowBackColor = this->pressedBackColor;
 					this->nowOutlineColor = this->pressedOutlineColor;
+					this->nowOverColor = this->pressedOverColor;
 				}
 				if (MouseL.up()) {
 					out = true;
@@ -84,6 +100,11 @@ namespace ogm {
 
 		void draw() const {
 			this->clickableRange.draw(this->nowBackColor);
+			if (this->isTexture) {
+				this->clickableRange.asPolygon().toBuffer2D(Arg::center(this->clickableRange.center() + this->texturePos), this->texture.size())
+					.draw(this->texture);
+			}
+			if(this->isTexture) this->clickableRange.draw(this->nowOverColor);
 			this->clickableRange.drawFrame(this->outlineWidth.x, this->outlineWidth.y, this->nowOutlineColor);
 			font(this->buttonTitle).drawAt(this->clickableRange.center(), Palette::Black);
 		}
@@ -105,7 +126,14 @@ namespace ogm {
 		Color defaultOutlineColor = Palette::Black;
 		Color mouseOverOutlineColor = Palette::Black;
 		Color pressedOutlineColor = Palette::Black;
+		Color nowOverColor = Color();
+		Color defaultOverColor = Color{ 0, 0, 0, 0 };
+		Color mouseOverOverColor = Color{ 0, 0, 0, 50 };
+		Color pressedOverColor = Color{ 0, 0, 0, 100 };
 		Point outlineWidth{ 0, 1 };
+		bool isTexture = false;
+		Texture texture{};
+		Point texturePos{ 0, 0 };
 	public:
 		Button() {
 			this->clickableRange = Polygon();
@@ -142,18 +170,27 @@ namespace ogm {
 			this->setOutlineColors(Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 0));
 		}
 		void setOutlineWidth(int inner, int outer) { this->outlineWidth = Point(inner, outer); }
+		void setDefaultOverColor(Color color) { this->defaultOverColor = color; }
+		void setMouseOverOverColor(Color color) { this->mouseOverOverColor = color; }
+		void setPressedOverColor(Color color) { this->pressedOutlineColor = color; }
+		void setTexture(const Texture& tx) { this->texture = tx; }
+		void setIsTexture(bool it) { this->isTexture = it; }
+		void setTexturePos(const Point& pos) { this->texturePos = pos; }
 
 		bool update() {
 			bool out = false;
 			this->nowBackColor = this->defaultBackColor;
 			this->nowOutlineColor = this->defaultOutlineColor;
+			this->nowOverColor = this->defaultOverColor;
 			if (this->canClick and this->clickableRange.mouseOver()) {
 				this->nowBackColor = this->mouseOverBackColor;
 				this->nowOutlineColor = this->mouseOverOutlineColor;
+				this->nowOverColor = this->mouseOverOverColor;
 				Cursor::RequestStyle(this->onCursorStyle);
 				if (MouseL.pressed()) {
 					this->nowBackColor = this->pressedBackColor;
 					this->nowOutlineColor = this->pressedOutlineColor;
+					this->nowOverColor = this->pressedOverColor;
 				}
 				if (MouseL.up()) {
 					out = true;
@@ -165,6 +202,11 @@ namespace ogm {
 
 		void draw() const {
 			this->clickableRange.draw(this->nowBackColor);
+			if (this->isTexture) {
+				this->clickableRange.toBuffer2D(Arg::center(this->clickableRange.centroid() + this->texturePos), this->texture.size())
+					.draw(this->texture);
+			}
+			if (this->isTexture) this->clickableRange.draw(this->nowOverColor);
 			this->clickableRange.drawFrame(this->outlineWidth.x + this->outlineWidth.y, this->nowOutlineColor);
 			font(this->buttonTitle).drawAt(this->clickableRange.centroid(), Palette::Black);
 		}
@@ -186,7 +228,14 @@ namespace ogm {
 		Color defaultOutlineColor = Palette::Black;
 		Color mouseOverOutlineColor = Palette::Black;
 		Color pressedOutlineColor = Palette::Black;
+		Color nowOverColor = Color{};
+		Color defaultOverColor = Color{0, 0, 0, 0};
+		Color mouseOverOverColor = Color{0, 0, 0, 50};
+		Color pressedOverColor = Color{0, 0, 0, 100};
 		Point outlineWidth{ 0, 1 };
+		bool isTexture = false;
+		Texture texture{};
+		Point texturePos{ 0, 0 };
 	public:
 		Button() {
 			this->clickableRange = Triangle();
@@ -213,7 +262,6 @@ namespace ogm {
 		}
 		void setDefaultOutlineColor(Color color) { this->defaultOutlineColor = color; }
 		void setMouseOverOutlineColor(Color color) { this->mouseOverOutlineColor = color; }
-		void setPressedOutlineColor(Color color) { this->pressedOutlineColor = color; }
 		void setOutlineColors(Color defaultColor, Color mouseOverColor, Color pressedColor) {
 			this->defaultOutlineColor = defaultColor;
 			this->mouseOverOutlineColor = mouseOverColor;
@@ -223,18 +271,28 @@ namespace ogm {
 			this->setOutlineColors(Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 0));
 		}
 		void setOutlineWidth(int inner, int outer) { this->outlineWidth = Point(inner, outer); }
+		void setPressedOutlineColor(Color color) { this->pressedOverColor = color; }
+		void setDefaultOverColor(Color color) { this->defaultOverColor = color; }
+		void setMouseOverOverColor(Color color) { this->mouseOverOverColor = color; }
+		void setPressedOverColor(Color color) { this->pressedOutlineColor = color; }
+		void setTexture(const Texture& tx) { this->texture = tx; }
+		void setIsTexture(bool it) { this->isTexture = it; }
+		void setTexturePos(const Point& pos) { this->texturePos = pos; }
 
 		bool update() {
 			bool out = false;
 			this->nowBackColor = this->defaultBackColor;
 			this->nowOutlineColor = this->defaultOutlineColor;
+			this->nowOverColor = this->defaultOverColor;
 			if (this->canClick and this->clickableRange.mouseOver()) {
 				this->nowBackColor = this->mouseOverBackColor;
 				this->nowOutlineColor = this->mouseOverOutlineColor;
+				this->nowOverColor = this->mouseOverOverColor;
 				Cursor::RequestStyle(this->onCursorStyle);
 				if (MouseL.pressed()) {
 					this->nowBackColor = this->pressedBackColor;
 					this->nowOutlineColor = this->pressedOutlineColor;
+					this->nowOverColor = this->pressedOverColor;
 				}
 				if (MouseL.up()) {
 					out = true;
@@ -246,6 +304,11 @@ namespace ogm {
 
 		void draw() const {
 			this->clickableRange.draw(this->nowBackColor);
+			if (this->isTexture) {
+				this->clickableRange.asPolygon().toBuffer2D(Arg::center(this->clickableRange.centroid() + this->texturePos), this->texture.size())
+					.draw(this->texture);
+			}
+			if (this->isTexture) this->clickableRange.draw(this->nowOverColor);
 			this->clickableRange.drawFrame(this->outlineWidth.x + this->outlineWidth.y, this->nowOutlineColor);
 			font(this->buttonTitle).drawAt(this->clickableRange.centroid(), Palette::Black);
 		}
