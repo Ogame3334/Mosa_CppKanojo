@@ -17,3 +17,21 @@ JUDGE Note::hit(int32 delta) {
 	}
 	return result;
 }
+
+TestNote::TestNote(MdspeedScene* scene, uint32 timing, Texture* texture) :
+	TestNoteBase(scene, timing, texture) {}
+
+JUDGE TestNote::hit(int32 delta) {
+	JUDGE result = JUDGE::miss;
+
+	if (delta < int32(scene->getJudgeTiming())) {
+		if (delta < int32(scene->getJudgeTiming() / 3))
+			result = JUDGE::excellent;
+		else if (delta < int32(scene->getJudgeTiming() * 2 / 3))
+			result = JUDGE::good;
+
+		texture = scene->getTexture(U"broken_apple");
+		scene->nextNote();
+	}
+	return result;
+}

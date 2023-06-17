@@ -156,6 +156,9 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MdspeedScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -813,6 +816,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NoteBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="readUserData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MdspeedScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -118,6 +118,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="LongNote.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MdspeedScene.cpp" />
     <ClCompile Include="Note.cpp" />
     <ClCompile Include="NoteBase.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -324,8 +325,10 @@
     <ClInclude Include="LongNote.h" />
     <ClInclude Include="Note.h" />
     <ClInclude Include="NoteBase.h" />
+    <ClInclude Include="readUserData.h" />
     <ClInclude Include="Scenes\choiceScene.h" />
     <ClInclude Include="Scenes\GameScene.h" />
+    <ClInclude Include="Scenes\MdspeedScene.h" />
     <ClInclude Include="Scenes\sceneManager.h" />
     <ClInclude Include="Scenes\titleScene.h" />
     <ClInclude Include="stdafx.h" />
