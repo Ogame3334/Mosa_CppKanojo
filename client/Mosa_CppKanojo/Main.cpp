@@ -17,11 +17,16 @@ void Main()
 	// ゲームシーン（名前は "Game"）を登録
 	manager.add<GameScene>(U"Game");
 
+	// 速度調整シーン（名前は"Mdspeed"）を登録
+	manager.add<MdspeedScene>(U"Mdspeed");
+
 	// 画面サイズを1920 x 1080に変更
 	Window::SetStyle(WindowStyle::Sizable);
 	Window::Resize(1920, 1080);
 
-	//System::SetTerminationTriggers(UserAction::NoAction);
+	//Window::SetFullscreen(true);
+
+	System::SetTerminationTriggers(UserAction::NoAction);
 
 	while (System::Update())
 	{

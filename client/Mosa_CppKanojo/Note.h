@@ -7,3 +7,10 @@ public:
 	JUDGE hit(int32 delta) override;
 private:
 };
+
+class TestNote : public TestNoteBase {
+public:
+	TestNote(class MdspeedScene* scene, uint32 timing, Texture* texture);
+	JUDGE hit(int32 delta) override;
+private:
+};
