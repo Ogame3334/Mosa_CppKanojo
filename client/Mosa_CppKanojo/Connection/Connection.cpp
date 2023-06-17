@@ -1,4 +1,5 @@
 ﻿#include "Connection.hpp"
+#include "../Protocol/PacketParser.hpp"
 
 namespace FruitsGroove {
 	namespace Connection {
@@ -21,6 +22,13 @@ namespace FruitsGroove {
 			}
 
 			return couldConnect;
+		}
+
+		Packet ServerConnection::recievePacket() {
+			const char* recievedPacket;
+			while (client.read(recievedPacket));
+			Packet packet = ParsePacket(recievedPacket);
+			return packet;
 		}
 	}
 }
