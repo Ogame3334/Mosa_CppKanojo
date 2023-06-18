@@ -4,6 +4,7 @@
 #include <memory>
 #include <thread>
 #include "src/Room/Room.hpp"
+#include "src/Handler/PacketHandler.hpp"
 
 namespace FruitsGroove{
     class RoomManager{
@@ -11,8 +12,9 @@ namespace FruitsGroove{
         using RoomPtr = std::unique_ptr<Room>;
     private:
         std::vector<RoomPtr> rooms;
+        PacketHandler packetHandler{};
     public:
-        RoomManager() = default;
+        RoomManager();
         void createRoom(SocketPtr socket1, SocketPtr socket2);
     };
 }

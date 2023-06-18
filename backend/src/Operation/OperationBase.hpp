@@ -1,9 +1,9 @@
 #pragma once
 #include "src/Protocol/OperationType.hpp"
 #include "src/Protocol/Packet.hpp"
-#include "src/Room/Room.hpp"
 #include <string_view>
 #include <boost/asio.hpp>
+#include "src/Room/Room.hpp"
 
 namespace asio = boost::asio;
 using asio::ip::tcp;

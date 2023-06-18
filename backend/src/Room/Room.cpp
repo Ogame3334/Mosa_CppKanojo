@@ -3,14 +3,14 @@
 #include "src/Handler/PacketHandler.hpp"
 
 namespace FruitsGroove{
-    Room::Room(std::array<SocketPtr, 2>&& sockets):
+    Room::Room(std::array<SocketPtr, 2>&& sockets, PacketHandler& ph):
         socketArray(std::move(sockets)){
+        this->packetHandler = ph;
         this->threadArray[0] = std::thread([&](){this->SocketDataProcessor(this->socketArray[0], this->socketArray[1]);});
         this->threadArray[1] = std::thread([&](){this->SocketDataProcessor(this->socketArray[1], this->socketArray[0]);});
     }
 
     void Room::SocketDataProcessor(SocketPtr& dest_socket, SocketPtr& source_socket){
-        PacketHandler packetHandler{};
         Packet packet;
         asio::streambuf receive_buffer;
         boost::system::error_code error;
@@ -25,6 +25,6 @@ namespace FruitsGroove{
             const char* data = asio::buffer_cast<const char*>(receive_buffer.data());
             packet = ParsePacket(data);
         }
-        packetHandler.Handle(packet, dest_socket, *this);
+        this->packetHandler.Handle(packet, dest_socket, *this);
     }
 }

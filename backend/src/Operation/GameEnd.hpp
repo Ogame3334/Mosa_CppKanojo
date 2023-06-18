@@ -3,11 +3,10 @@
 #include "src/Protocol/PacketBuilder.hpp"
 #include <mutex>
 
+inline std::mutex playerCountMtx2;
+inline int readyPlayerCount2 = 0;
 
 namespace FruitsGroove{
-    inline std::mutex playerCountMtx2;
-    inline int readyPlayerCount2 = 0;
-    
 class GameEnd: public OperationBase{
     public:
     GameEnd():

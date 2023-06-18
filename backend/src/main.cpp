@@ -3,8 +3,6 @@
 #include <memory>
 
 #include "./Server/Server.hpp"
-#include "./Handler/TestHandler.hpp"
-#include "src/Handler/PacketHandler.hpp"
 
 int main(){
     FruitsGroove::Server server{std::make_unique<FruitsGroove::PacketHandler>()};

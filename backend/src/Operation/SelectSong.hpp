@@ -28,7 +28,7 @@ class SelectSong: public OperationBase{
         while(room.songsArray.size() < 2){
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
-        std::random_shuffle(room.songsArray.begin(), room.songsArray.end()); //TODO shuffle 多分できた
+        std::random_shuffle(room.songsArray.begin(), room.songsArray.end()); //TODO shuffle できてない
         boost::system::error_code error;
         asio::write(*socket, asio::buffer("08" + room.songsArray[0]), error);
     }

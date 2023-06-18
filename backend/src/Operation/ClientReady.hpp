@@ -3,10 +3,10 @@
 #include "src/Protocol/PacketBuilder.hpp"
 #include <mutex>
 
+inline std::mutex playerCountMtx;
+inline int readyPlayerCount = 0;
 
 namespace FruitsGroove{
-    inline std::mutex playerCountMtx;
-    inline int readyPlayerCount = 0;
     
 class ClientReady: public OperationBase{
     public:

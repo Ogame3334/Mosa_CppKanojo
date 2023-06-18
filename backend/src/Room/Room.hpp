@@ -26,6 +26,7 @@
 #include <spdlog/spdlog.h>
 #include <thread>
 #include <string>
+#include "src/Handler/PacketHandler.hpp"
 
 namespace FruitsGroove{
 class Room{
@@ -33,10 +34,11 @@ class Room{
 private:
     std::array<SocketPtr, 2> socketArray;
     std::array<std::thread, 2> threadArray;
+    PacketHandler packetHandler;
     void SocketDataProcessor(SocketPtr& dest_socket, SocketPtr& source_socket);
 public:
     std::vector<std::string> songsArray;
     Room() = delete;
-    Room(std::array<SocketPtr, 2>&& sockets);
+    Room(std::array<SocketPtr, 2>&& sockets, PacketHandler& ph);
 };
 }
