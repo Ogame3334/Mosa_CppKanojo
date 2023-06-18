@@ -27,6 +27,7 @@ public:
 	uint32 getComb();
 	uint32 getJudgeTiming();
 	Texture* getTexture(String name);
+	uint8 getBpm();
 private:
 	void loadNotes();
 	//Notes

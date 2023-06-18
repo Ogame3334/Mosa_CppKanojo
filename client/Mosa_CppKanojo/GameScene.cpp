@@ -1,6 +1,7 @@
 ﻿#include"GameScene.h"
 #include"Note.h"
 #include"LongNote.h"
+#include"MashNote.h"
 #include"EndNote.h"
 
 GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId({0,0}), isStart(false) {
@@ -266,6 +267,8 @@ void GameScene::loadNotes() {
 
 			if(params[0] == U"0")
 				notes[upper].push_back(std::shared_ptr<LongNote>(new LongNote{ this, timing, lenght, uint32(lenght * data.bpm / 300.0), &textures[U"broken_apple"] }));
+			else
+				notes[under].push_back(std::shared_ptr<MashNote>(new MashNote{ this, timing, lenght, uint32(lenght * data.bpm / 300.0), &textures[U"apple"] }));
 		}
 		else {
 			if (params[0] == U"0")
@@ -289,6 +292,7 @@ bool GameScene::nextNote(Lane lane) {
 		return false;
 	}
 	frontNoteId[lane]++;
+	Print << U"process";
 	return true;
 }
 
@@ -304,4 +308,8 @@ uint32 GameScene::getJudgeTiming() {
 
 Texture* GameScene::getTexture(String name) {
 	return &textures[name];
+}
+
+uint8 GameScene::getBpm() {
+	return data.bpm;
 }
