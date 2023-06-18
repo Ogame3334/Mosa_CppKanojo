@@ -1,4 +1,4 @@
-﻿# include <Siv3D.hpp>
+# include <Siv3D.hpp>
 # include "Scenes/sceneManager.h"
 
 void Main()
@@ -6,6 +6,8 @@ void Main()
 	FontAsset::Register(U"TitleFont", 60, Typeface::Heavy);
 	FontAsset::Register(U"CombFont", 200, Typeface::Heavy);
 	FontAsset::Register(U"CountFont", 300, Typeface::Heavy);
+  FontAsset::Register(U"2PScoreFont", 40, Typeface::Heavy);
+	FontAsset::Register(U"2PCombFont", 130, Typeface::Heavy);
 	// シーンマネージャーを作成
 	App manager;
 

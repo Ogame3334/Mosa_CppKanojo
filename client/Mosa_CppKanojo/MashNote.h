@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include"NoteBase.h"
 
 class MashNote : public NoteBase {
@@ -9,6 +9,7 @@ public:
 	uint32 getTiming() override;
 private:
 	Array<Texture*> fruits;
+	Array<String> fruitNames;
 	uint32 lenght;
 	uint32 width;
 };
