@@ -278,14 +278,15 @@ void GameScene::loadNotes() {
 		uint32 timing = 260;
 		double one_bar = 240000 / data.bpm;
 
-		for (int i = 0; i < params[1].length(); ++i) {
-			timing += one_bar / Math::Pow(4, i) * (params[1].at(i) - '0');
+		timing += one_bar * Parse<int>(params[1]);
+		for (int i = 0; i < params[2].length(); ++i) {
+			timing += one_bar / Math::Pow(4, i+1) * (params[2].at(i) - '0');
 		}
 
-		if (params.size() == 3) {
+		if (params.size() == 4) {
 			uint32 lenght = 0;
-			for (int i = 0; i < params[2].length(); ++i) {
-				lenght += one_bar / Math::Pow(4, i) * (params[2].at(i) - '0');
+			for (int i = 0; i < params[3].length(); ++i) {
+				lenght += one_bar / Math::Pow(4, i) * (params[3].at(i) - '0');
 			}
 
 			if(params[0] == U"0")
