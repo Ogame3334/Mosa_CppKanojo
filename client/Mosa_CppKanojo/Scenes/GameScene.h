@@ -25,6 +25,17 @@ public:
 private:
 	void loadNotes();
 
+	// メニュー画面ロック
+	bool isMenuLock;
+	int resumeCount;
+	bool isResumed;	// 一時停止してから再生したかどうか
+	const int resumeMaxCount = 200;	// 再開時のスタートまでのカウント
+	const int resumeCountNum = 3;
+	// メニュー画面で表示するボタン
+	ogm::Button<RoundRect> resumeButton{ RoundRect(550, 300, 400, 100, 5), U"曲を再開" };
+	ogm::Button<RoundRect> restartButton{ RoundRect(550, 450, 400, 100, 5), U"最初からやり直す" };
+	ogm::Button<RoundRect> exitButton{ RoundRect(550, 600, 400, 100, 5), U"曲選択に戻る" };
+
 	//Notes
 	std::array<Array<std::shared_ptr<class NoteBase>>, 2> notes;
 	std::array<uint8, 2> frontNoteId;

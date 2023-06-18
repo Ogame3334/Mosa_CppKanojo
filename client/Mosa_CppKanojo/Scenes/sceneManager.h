@@ -1,5 +1,6 @@
 ﻿# pragma once
 # include <Siv3D.hpp>
+# include "../Connection/Connection.hpp"
 
 // 楽曲名とスコアを共有する
 struct GameData {
@@ -7,6 +8,8 @@ struct GameData {
 	String songName = U"";
 	int songNum = 0;
 	int score = 0;
+	bool isMultiPlay = 0;
+	FruitsGroove::Connection::ServerConnection serverConnection{};
 };
 
 // 楽曲情報を保存
@@ -23,4 +26,5 @@ using App = SceneManager<String, GameData>;
 # include "./titleScene.h"
 # include "./choiceScene.h"
 # include "./GameScene.h"
+# include "./ResultScene.h"
 # include "./MdspeedScene.h"

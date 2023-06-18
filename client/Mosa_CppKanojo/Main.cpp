@@ -5,6 +5,7 @@ void Main()
 {
 	FontAsset::Register(U"TitleFont", 60, Typeface::Heavy);
 	FontAsset::Register(U"CombFont", 200, Typeface::Heavy);
+	FontAsset::Register(U"CountFont", 300, Typeface::Heavy);
 	// シーンマネージャーを作成
 	App manager;
 
@@ -16,6 +17,9 @@ void Main()
 
 	// ゲームシーン（名前は "Game"）を登録
 	manager.add<GameScene>(U"Game");
+
+	// リザルトシーン（名前は"Result"）を登録
+	manager.add<Result>(U"Result");
 
 	// 速度調整シーン（名前は"Mdspeed"）を登録
 	manager.add<MdspeedScene>(U"Mdspeed");

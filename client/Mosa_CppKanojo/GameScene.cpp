@@ -22,81 +22,128 @@ GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId{0,0}, i
 		{U"invisible", Texture{U"assets\\Textures\\invisible.png"}}
 	};
 	loadNotes();
+	isMenuLock = false;
+	resumeCount = 0;
+	isResumed = false;
+	// 各ボタンの色設定など
+	this->resumeButton.setFont(20, Typeface::Regular, FontStyle::Default);
+	this->resumeButton.setBackColors(ColorF{ 1.0, 0.714, 0.757, 1.0 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->resumeButton.setOutlineWidth(3, 0);
+	this->resumeButton.setOutlineColors(ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->restartButton.setFont(20, Typeface::Regular, FontStyle::Default);
+	this->restartButton.setBackColors(ColorF{ 1.0, 0.714, 0.757, 1.0 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->restartButton.setOutlineWidth(3, 0);
+	this->restartButton.setOutlineColors(ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->exitButton.setFont(20, Typeface::Regular, FontStyle::Default);
+	this->exitButton.setBackColors(ColorF{ 1.0, 0.714, 0.757, 1.0 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->exitButton.setOutlineWidth(3, 0);
+	this->exitButton.setOutlineColors(ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
 }
 
 void GameScene::update() {
-	//play audio
-	if (!data.audio.isPlaying()) {
-		if (isStart)
-			changeScene(U"Title");
-		else {
+	if (isMenuLock == false && resumeCount == 0)
+	{
+		if (isResumed == true) {	// 一時停止の後再生していたら
+			isResumed = false;	// フラグを折る
 			data.audio.play();
-			isStart = true;
 		}
-	}
 
-	if (KeyEscape.pressed()) {	// ESCキーが押されたら選択画面に戻る
-		changeScene(U"Choice");
-	}
-
-	currentTime = uint32(data.audio.posSec() * 1000);
-
-	//update press animation
-	if (currentAnim != 0) {
-		++currentAnim;
-		if (pressAnim.size() == currentAnim) currentAnim = 0;
-	}
-	if (currentDryAnim != 0) {
-		++currentDryAnim;
-		if (dryAnim.size() == currentDryAnim) currentDryAnim = 0;
-	}
-
-	//update judge message
-	if (judges.size() > 0 && currentTime - judges.front().second > 1000) {
-		judges.pop_front();
-	}
-
-	//decide front node
-	int32 difTime[]{ 0, 0 };
-	Lane n = upper;
-	for (;3;) { // <- It's so cute!!!
-		difTime[n] = int32(notes[n].at(frontNoteId[n])->getTiming()) - int32(currentTime);
-		if (difTime[n] >= -int32(parmitDilay)) {
-			if (n == upper) {
-				n = under;
-				continue;
+		//play audio
+		if (!data.audio.isPlaying()) {
+			if (isStart) {
+				getData().score = this->score;
+				changeScene(U"Result");
 			}
-			break;
-		}
-		if (!nextNote(n)) {
-			if (n == upper) {
-				n = under;
-				continue;
+			else {
+				data.audio.play();
+				isStart = true;
 			}
-			break;
+		}
+
+		if (KeyEscape.down()) {	// ESCキーが押されたら選択画面に戻る
+			isMenuLock = true;
+			data.audio.pause();
+		}
+
+		currentTime = uint32(data.audio.posSec() * 1000);
+
+		//update press animation
+		if (currentAnim != 0) {
+			++currentAnim;
+			if (pressAnim.size() == currentAnim) currentAnim = 0;
+		}
+		if (currentDryAnim != 0) {
+			++currentDryAnim;
+			if (dryAnim.size() == currentDryAnim) currentDryAnim = 0;
+		}
+
+		//update judge message
+		if (judges.size() > 0 && currentTime - judges.front().second > 1000) {
+			judges.pop_front();
+		}
+
+		//decide front node
+		int32 difTime[]{ 0, 0 };
+		Lane n = upper;
+		for (; 3;) { // <- It's so cute!!!
+			difTime[n] = int32(notes[n].at(frontNoteId[n])->getTiming()) - int32(currentTime);
+			if (difTime[n] >= -int32(parmitDilay)) {
+				if (n == upper) {
+					n = under;
+					continue;
+				}
+				break;
+			}
+			if (!nextNote(n)) {
+				if (n == upper) {
+					n = under;
+					continue;
+				}
+				break;
+			}
+		}
+
+		//process key controle
+		n = upper;
+		if (KeyF.down() || KeyD.down() || KeyJ.down() || KeyK.down()) {
+			if (KeyF.down() || KeyD.down()) {
+				n = under;
+				currentAnim = 1;
+			}
+			else {
+				n = upper;
+				currentDryAnim = 1;
+			}
+			JUDGE result = notes[n].at(frontNoteId[n])->hit(difTime[n], n);
+			judges.push_back(std::pair<JUDGE, uint32>{
+				result, currentTime
+			});
+			if (result == JUDGE::miss) {
+				comb = 0;
+			}
+			else {
+				++comb;
+			}
 		}
 	}
+	else	// メニュー画面中の処理
+	{
+		if (resumeCount == 0) {	// カウントダウン中でない処理
 
-	//process key controle
-	n = upper;
-	if (KeyF.down() || KeyD.down() || KeyJ.down() || KeyK.down()) {
-		if (KeyF.down() || KeyD.down()) {
-			n = under;
-			currentAnim = 1;
+			if (resumeButton.update() || KeyEscape.down()) {	// タイミング調整ボタンで調整画面に遷移
+				isMenuLock = false;
+				isResumed = true;
+				resumeCount = resumeMaxCount;	// 再開カウントダウンを設定
+			}
+			if (restartButton.update()) {	// リスタートボタン（自身に遷移する）
+				changeScene(U"Game");
+			}
+			if (exitButton.update()) {	// 曲選択に戻る
+				changeScene(U"Choice");
+			}
 		}
 		else {
-			n = upper;
-			currentDryAnim = 1;
-		}
-		JUDGE result = notes[n].at(frontNoteId[n])->hit(difTime[n], n);
-		judges.push_back(std::pair<JUDGE, uint32>{
-			result, currentTime
-		});
-		if (result == JUDGE::miss) {
-			comb = 0;
-		}
-		else {
-			++comb;
+			resumeCount--;
 		}
 	}
 }
@@ -210,6 +257,17 @@ void GameScene::draw() const {
 			int32(hit.right().x) + delta,
 			int32(hit.top().y - 50) + (delta-10)*(delta-10) - 100
 		);
+	}
+
+	if (isMenuLock == true) {	// メニュー画面であれば
+		Rect{ 0, 0, 1920, 1080 }.draw(ColorF{ 0.0,0.0,0.0,0.25 });	// 画面を少し灰色にする
+		this->resumeButton.draw();	// メニュー項目の表示
+		this->restartButton.draw();	// メニュー項目の表示
+		this->exitButton.draw();	// メニュー項目の表示
+	}
+	if (resumeCount > 0) {	// カウントダウン中であれば
+		int count = resumeCount / (resumeMaxCount / resumeCountNum) + 1;
+		FontAsset(U"CountFont")(U"{}"_fmt(count)).drawAt(Scene::Center().x, Scene::Center().y, Palette::Peachpuff);	// 再開カウントダウンを表示
 	}
 }
 

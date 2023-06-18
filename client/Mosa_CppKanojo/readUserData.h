@@ -24,4 +24,11 @@ public:
 		userData[U"options"][lavel] = value;
 		userData.save(U"../UserData/userdata.json");	// ユーザデータの保存
 	}
+	String getUserData(String lavel) {
+		return this->userData[U"gamedata"][lavel].getString();
+	}
+	void setUserData(String lavel, String value) {
+		userData[U"gamedata"][lavel] = value;
+		userData.save(U"../UserData/userdata.json");
+	}
 };
