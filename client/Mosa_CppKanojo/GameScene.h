@@ -28,6 +28,7 @@ public:
 	uint32 getJudgeTiming();
 	Texture* getTexture(String name);
 	uint8 getBpm();
+	String getFruit(int i);
 private:
 	void loadNotes();
 	//Notes
@@ -57,4 +58,5 @@ private:
 	uint8 currentAnim = 0;
 	std::array<int, 4> dryAnim{ 0, 50, 35, 15 };
 	uint8 currentDryAnim = 0;
+	std::array<String, 3> fruits;
 };

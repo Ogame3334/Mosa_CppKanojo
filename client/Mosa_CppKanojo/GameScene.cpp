@@ -27,9 +27,16 @@ GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId({0,0}),
 		{U"apple", Texture{U"assets\\Textures\\apple.png"}},
 		{U"broken_apple", Texture{U"assets\\Textures\\broken_apple.png"}},
 		{U"dried_apple", Texture{U"assets\\Textures\\dried_apple.png"}},
+		{U"melon", Texture{U"assets\\Textures\\melon.png"}},
+		{U"broken_melon", Texture{U"assets\\Textures\\broken_melon.png"}},
+		{U"dried_melon", Texture{U"assets\\Textures\\dried_melon.png"}},
+		{U"banana", Texture{U"assets\\Textures\\banana.png"}},
+		{U"broken_banana", Texture{U"assets\\Textures\\broken_banana.png"}},
+		{U"dried_banana", Texture{U"assets\\Textures\\dried_banana.png"}},
 
 		{U"invisible", Texture{U"assets\\Textures\\invisible.png"}}
 	};
+	fruits = { U"apple", U"melon", U"banana" };
 	loadNotes();
 }
 
@@ -274,6 +281,7 @@ void GameScene::loadNotes() {
 		for (int i = 0; i < params[1].length(); ++i) {
 			timing += one_bar / Math::Pow(4, i) * (params[1].at(i) - '0');
 		}
+
 		if (params.size() == 3) {
 			uint32 lenght = 0;
 			for (int i = 0; i < params[2].length(); ++i) {
@@ -281,15 +289,15 @@ void GameScene::loadNotes() {
 			}
 
 			if(params[0] == U"0")
-				notes[upper].push_back(std::shared_ptr<LongNote>(new LongNote{ this, timing, lenght, uint32(lenght * data.bpm / 300.0), &textures[U"broken_apple"] }));
+				notes[upper].push_back(std::shared_ptr<LongNote>(new LongNote{ this, timing, lenght, uint32(lenght * data.bpm / 300.0), &textures[U"broken_{}"_fmt(fruits[timing%3])]}));
 			else
-				notes[under].push_back(std::shared_ptr<MashNote>(new MashNote{ this, timing, lenght, uint32(lenght * data.bpm / 300.0), &textures[U"apple"] }));
+				notes[under].push_back(std::shared_ptr<MashNote>(new MashNote{ this, timing, lenght, uint32(lenght * data.bpm / 300.0), &textures[U"{}"_fmt(fruits[timing % 3])] }));
 		}
 		else {
 			if (params[0] == U"0")
-				notes[upper].push_back(std::shared_ptr<Note>(new Note{ this, timing, &textures[U"broken_apple"] }));
+				notes[upper].push_back(std::shared_ptr<Note>(new Note{ this, timing, &textures[U"broken_{}"_fmt(fruits[timing % 3])], fruits[timing % 3]}));
 			else
-				notes[under].push_back(std::shared_ptr<Note>(new Note{ this, timing, &textures[U"apple"] }));
+				notes[under].push_back(std::shared_ptr<Note>(new Note{ this, timing, &textures[U"{}"_fmt(fruits[timing % 3])], fruits[timing % 3]}));
 		}
 	}
 	for (int i = 0; i < 2; ++i) {
@@ -326,4 +334,8 @@ Texture* GameScene::getTexture(String name) {
 
 uint8 GameScene::getBpm() {
 	return data.bpm;
+}
+
+String GameScene::getFruit(int i) {
+	return fruits[i%fruits.size()];
 }

@@ -10,6 +10,7 @@ public:
 	uint32 getTiming() override;
 private:
 	Array<Texture*> fruits;
+	Array<String> fruitNames;
 	uint32 lenght;
 	uint32 width;
 	bool isPushed = false;

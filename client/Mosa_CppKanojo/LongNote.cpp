@@ -4,7 +4,8 @@
 LongNote::LongNote(GameScene* scene, uint32 start, uint32 lenght, uint32 width, Texture* texture) :
 	NoteBase(scene, start, texture), lenght(lenght), width(width){
 	for (int i = 0; i < width; i += 80) {
-		fruits.push_back(texture);
+		fruitNames.push_back(scene->getFruit(timing + i));
+		fruits.push_back(scene->getTexture(U"broken_{}"_fmt(fruitNames.at(i / 80))));
 	}
 }
 

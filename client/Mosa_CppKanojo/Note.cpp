@@ -1,7 +1,7 @@
 ﻿#include"Note.h"
 #include"GameScene.h"
-Note::Note(GameScene* scene, uint32 timing, Texture* texture):
-	NoteBase(scene, timing, texture) {}
+Note::Note(GameScene* scene, uint32 timing, Texture* texture, String fruit):
+	NoteBase(scene, timing, texture), fruit(fruit) {}
 
 JUDGE Note::hit(int32 delta, Lane lane) {
 	JUDGE result = JUDGE::miss;
@@ -18,7 +18,7 @@ JUDGE Note::hit(int32 delta, Lane lane) {
 			scene->addScere(500 + scene->getComb() * 5);
 		}
 
-		texture = lane == under?scene->getTexture(U"broken_apple"):scene->getTexture(U"dried_apple");
+		texture = lane == under ? scene->getTexture(U"broken_{}"_fmt(fruit)) : scene->getTexture(U"dried_{}"_fmt(fruit));
 		scene->nextNote(lane);
 	}
 	return result;
