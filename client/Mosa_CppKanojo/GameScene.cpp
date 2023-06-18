@@ -16,6 +16,7 @@ GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId({0,0}),
 		{U"bg_kibako", Texture{U"assets\\Textures\\bg_kibako.png"}},
 		{U"monitor", Texture{U"assets\\Textures\\monitor.png"}},
 		{U"giar", Texture{U"assets\\Textures\\giar.png"}},
+		{U"plate", Texture{U"assets\\Textures\\plate.png"}},
 
 		{U"excellent", Texture{U"assets\\Textures\\text_excellent.png"}},
 		{U"good", Texture{U"assets\\Textures\\text_good.png"}},

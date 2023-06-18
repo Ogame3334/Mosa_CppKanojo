@@ -29,7 +29,7 @@ void MashNote::draw(int hitX, int hitY, int currentTime, int bpm, int lane) {
 		Rect{ x + i * 80, y, 100 }(*fruits.at(i)).draw();
 	}
 
-	Rect{ x + 50, y + 80, width, 20 }.draw(Palette::Brown);
+	Rect{ x + 50, y + 80, width, 20 }(*scene->getTexture(U"plate")).draw();
 }
 
 uint32 MashNote::getTiming() {

@@ -13,12 +13,12 @@ JUDGE LongNote::hit(int32 delta, Lane lane) {
 	if (lane == upper) {
 		delta -= lenght;
 
-		if (delta > -int32(scene->getJudgeTiming())) {
+		if (delta < int32(scene->getJudgeTiming())) {
 			if (Math::Abs(delta) < int32(scene->getJudgeTiming() / 3)) {
 				result = JUDGE::excellent;
 				scene->addScere(1000 + scene->getComb() * 10);
 			}
-			else if (delta > -int32(scene->getJudgeTiming() * 2 / 3)) {
+			else if (delta < int32(scene->getJudgeTiming() * 2 / 3)) {
 				result = JUDGE::good;
 				scene->addScere(500 + scene->getComb() * 5);
 			}
@@ -49,7 +49,7 @@ void LongNote::draw(int hitX, int hitY, int currentTime, int bpm, int lane){
 		Rect{ x + i*80, y, 100 }(*fruits.at(i)).draw();
 	}
 
-	Rect{ x + 50, y + 80, width, 20 }.draw(Palette::Brown);
+	Rect{ x + 50, y + 80, width, 20 }(*scene->getTexture(U"plate")).draw();
 }
 
 void LongNote::update(int currentTime, int bpm) {
