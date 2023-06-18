@@ -35,6 +35,8 @@ void Main()
 {
 	FontAsset::Register(U"TitleFont", 60, Typeface::Heavy);
 	FontAsset::Register(U"CombFont", 200, Typeface::Heavy);
+	FontAsset::Register(U"2PScoreFont", 40, Typeface::Heavy);
+	FontAsset::Register(U"2PCombFont", 130, Typeface::Heavy);
 	//Audio data = Audio{U"C:\\Users\\hmits\\source\\repos\\Mosa_CppKanojo\\client\\CassisGrape.mp3"};
 	// シーンマネージャーを作成
 	Window::SetStyle(WindowStyle::Sizable);

@@ -10,7 +10,6 @@ MashNote::MashNote(GameScene* scene, uint32 start, uint32 lenght, uint32 width, 
 
 JUDGE MashNote::hit(int32 delta, Lane lane) {
 	JUDGE result = JUDGE::miss;
-	Print << delta;
 
 	if (delta - lenght < int32(scene->getJudgeTiming() / 3) || delta > int32(scene->getJudgeTiming() / 3)) {
 		result = JUDGE::good;

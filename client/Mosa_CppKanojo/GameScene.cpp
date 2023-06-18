@@ -4,6 +4,11 @@
 #include"MashNote.h"
 #include"EndNote.h"
 
+struct OpponentData {
+	uint32 score;
+	uint32 comb;
+} testData{ 10000, 10 };
+
 GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId({0,0}), isStart(false) {
 	data = SongData{U"test(bpm_120)", Audio{U"assets\\Songs\\test(bpm_120).mp3"}, 0};
 	textures = std::unordered_map<String, Texture>{
@@ -41,8 +46,10 @@ void GameScene::update() {
 	currentTime = uint32(data.audio.posSec() * 1000);
 
 	//update judge message
-	if (judges.size() > 0 && currentTime - judges.front().second > 1000) {
-		judges.pop_front();
+	for (auto lineJudges : judges) {
+		if (lineJudges.size() > 0 && currentTime - lineJudges.front().second > 1000) {
+			lineJudges.pop_front();
+		}
 	}
 	//update press animation
 	if (currentAnim != 0) {
@@ -92,7 +99,7 @@ void GameScene::update() {
 			currentDryAnim = 1;
 		}
 		JUDGE result = notes[n].at(frontNoteId[n])->hit(difTime[n], n);
-		judges.push_back(std::pair<JUDGE, uint32>{
+		judges[n].push_back(std::pair<JUDGE, uint32>{
 			result, currentTime
 		});
 		if (result == JUDGE::miss) {
@@ -105,7 +112,7 @@ void GameScene::update() {
 	if (KeyJ.up() || KeyK.up()) {
 		JUDGE result = notes[upper].at(frontNoteId[upper])->hit(difTime[upper], end);
 		if (result != JUDGE::none) {
-			judges.push_back(std::pair<JUDGE, uint32>{
+			judges[upper].push_back(std::pair<JUDGE, uint32>{
 				result, currentTime
 			});
 			if (result == JUDGE::miss) {
@@ -127,7 +134,9 @@ void GameScene::draw() const {
 		Rect{ Scene::Width() / 2,Scene::Height() * i / 3,Scene::Width() / 3, Scene::Height() / 3 }(textures.at(U"bg_kibako")).draw();
 		Rect{ Scene::Width() * 2 / 3,Scene::Height() * i / 3,Scene::Width()/3, Scene::Height()/3 }(textures.at(U"bg_kibako")).draw();
 	}
-	Rect{ Scene::Center().x - 100, 0, 600, 400}(textures.at(U"monitor")).draw();
+	Rect{ Scene::Center().x - 100, 0, 600, 400 }(textures.at(U"monitor")).draw();
+	//2P monitor
+	Rect{ Scene::Center().x + 450, 0, 450, 300}(textures.at(U"monitor")).draw();
 
 	//Machine
 	//Wall
@@ -214,21 +223,26 @@ void GameScene::draw() const {
 	//Score
 	FontAsset(U"TitleFont")(U"{}"_fmt(score)).drawAt(Scene::Center().x + 200, 330, Color{240, 255, 240});
 	FontAsset(U"CombFont")(U"{}"_fmt(comb)).drawAt(Scene::Center().x + 200, 150, Color{ 240, 255, 240 });
+	//2P score
+	FontAsset(U"2PScoreFont")(U"{}"_fmt(testData.score)).drawAt(Scene::Center().x + 675, 230, Color{ 240, 255, 240 });
+	FontAsset(U"2PCombFont")(U"{}"_fmt(testData.comb)).drawAt(Scene::Center().x + 675, 120, Color{ 240, 255, 240 });
 	//Judge
-	for (auto judge : judges) {
-		String judgeMsg = U"miss";
-		switch (judge.first) {
-		case JUDGE::excellent:
-			judgeMsg = U"excellent";
-			break;
-		case JUDGE::good:
-			judgeMsg = U"good";
+	for (int i = 0; i < judges.size(); ++i) {
+		for (auto judge : judges[i]) {
+			String judgeMsg = U"miss";
+			switch (judge.first) {
+			case JUDGE::excellent:
+				judgeMsg = U"excellent";
+				break;
+			case JUDGE::good:
+				judgeMsg = U"good";
+			}
+			int32 delta = (currentTime - judge.second) / 20;
+			textures.at(judgeMsg).draw(
+				int32(hit.right().x) + delta,
+				int32(hit.top().y - 50) + (delta - 10) * (delta - 10) - 100 + 450 * (i-1)
+			);
 		}
-		int32 delta = (currentTime - judge.second)/20;
-		textures.at(judgeMsg).draw(
-			int32(hit.right().x) + delta,
-			int32(hit.top().y - 50) + (delta-10)*(delta-10) - 100
-		);
 	}
 }
 
@@ -292,7 +306,6 @@ bool GameScene::nextNote(Lane lane) {
 		return false;
 	}
 	frontNoteId[lane]++;
-	Print << U"process";
 	return true;
 }
 

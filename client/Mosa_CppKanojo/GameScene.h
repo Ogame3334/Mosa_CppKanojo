@@ -51,7 +51,7 @@ private:
 	//Score
 	uint32 score = 0;
 	uint32 comb = 0;
-	Array<std::pair<JUDGE, uint32>> judges;
+	std::array<Array<std::pair<JUDGE, uint32>>,2> judges;
 
 	std::array<uint16, 4> pressAnim{ 350, 200, 250, 300 };
 	uint8 currentAnim = 0;
