@@ -22,7 +22,7 @@ private:
 
 	// 背景を動かす
 	const Image bgImage_raw{ U"assets/Textures/BackGround/Banana.png" };
-	const Texture bgImage[2]{ Texture{ bgImage_raw.scaled(0.6) },  Texture{ bgImage_raw.scaled(0.6) } };	// 背景画像の生成
+	const Texture bgImage[2]{ Texture{ bgImage_raw },  Texture{ bgImage_raw } };	// 背景画像の生成
 	Vec2 bg_pos[2]{ Vec2{ 0,0 }, Vec2{ 0,1620 } };	// 背景画像の座標
 
 	Array<String> songNames;	// 曲名

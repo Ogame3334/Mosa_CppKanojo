@@ -1,5 +1,5 @@
 ﻿#include"MashNote.h"
-#include"GameScene.h"
+#include"Scenes/GameScene.h"
 
 MashNote::MashNote(GameScene* scene, uint32 start, uint32 lenght, uint32 width, Texture* texture) :
 	NoteBase(scene, start, texture), lenght(lenght), width(width) {

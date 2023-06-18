@@ -115,13 +115,17 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Connection\Connection.cpp" />
     <ClCompile Include="EndNote.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="LongNote.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MashNote.cpp" />
+    <ClCompile Include="MdspeedScene.cpp" />
     <ClCompile Include="Note.cpp" />
     <ClCompile Include="NoteBase.cpp" />
+    <ClCompile Include="Protocol\PacketBuilder.cpp" />
+    <ClCompile Include="Protocol\PacketParser.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -302,6 +306,8 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
+    <None Include="Scenes\MdspeedScene.h.org" />
+    <None Include="titleScene.h.org" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\shot.mp3" />
@@ -322,13 +328,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Button.hpp" />
+    <ClInclude Include="Connection\Connection.hpp" />
     <ClInclude Include="EndNote.h" />
-    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Judge.h" />
     <ClInclude Include="LongNote.h" />
     <ClInclude Include="MashNote.h" />
     <ClInclude Include="Note.h" />
     <ClInclude Include="NoteBase.h" />
+    <ClInclude Include="Protocol\OperationType.hpp" />
+    <ClInclude Include="Protocol\Packet.hpp" />
+    <ClInclude Include="Protocol\PacketBuilder.hpp" />
+    <ClInclude Include="Protocol\PacketParser.hpp" />
+    <ClInclude Include="readUserData.h" />
+    <ClInclude Include="Scenes\choiceScene.h" />
+    <ClInclude Include="Scenes\GameScene.h" />
+    <ClInclude Include="Scenes\MdspeedScene.h" />
+    <ClInclude Include="Scenes\ResultScene.h" />
+    <ClInclude Include="Scenes\sceneManager.h" />
+    <ClInclude Include="Scenes\titleScene.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

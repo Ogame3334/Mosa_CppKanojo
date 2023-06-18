@@ -12,7 +12,7 @@ class Title : public App::Scene
 private:
 
 	const Image titlebg_raw{ U"assets/Textures/BackGround/titleBg.png" };
-	const Texture titleBg{ {titlebg_raw.scaled(0.8)}};
+	const Texture titleBg{ {titlebg_raw}};
 	UserData userData;
 	String userName;
 	bool isSetUserName = false;

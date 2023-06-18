@@ -3,7 +3,9 @@
 #include<unordered_map>
 #include<memory>
 #include"Judge.h"
-using App = SceneManager<String>;
+#include"Scenes/sceneManager.h"
+
+using App = SceneManager<String, GameData>;
 
 enum Lane {
 	upper,
@@ -59,4 +61,15 @@ private:
 	std::array<int, 4> dryAnim{ 0, 50, 35, 15 };
 	uint8 currentDryAnim = 0;
 	std::array<String, 3> fruits;
+
+	// メニュー画面ロック
+	bool isMenuLock;
+	int resumeCount;
+	bool isResumed;	// 一時停止してから再生したかどうか
+	const int resumeMaxCount = 200;	// 再開時のスタートまでのカウント
+	const int resumeCountNum = 3;
+	// メニュー画面で表示するボタン
+	ogm::Button<RoundRect> resumeButton{ RoundRect(550, 300, 400, 100, 5), U"曲を再開" };
+	ogm::Button<RoundRect> restartButton{ RoundRect(550, 450, 400, 100, 5), U"最初からやり直す" };
+	ogm::Button<RoundRect> exitButton{ RoundRect(550, 600, 400, 100, 5), U"曲選択に戻る" };
 };
