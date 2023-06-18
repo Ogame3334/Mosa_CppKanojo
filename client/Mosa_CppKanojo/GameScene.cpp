@@ -1,4 +1,4 @@
-﻿#include"GameScene.h"
+#include"GameScene.h"
 #include"Note.h"
 #include"LongNote.h"
 #include"MashNote.h"
@@ -18,6 +18,7 @@ GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId({0,0}),
 		{U"giar", Texture{U"assets\\Textures\\giar.png"}},
 		{U"plate", Texture{U"assets\\Textures\\plate.png"}},
 
+
 		{U"excellent", Texture{U"assets\\Textures\\text_excellent.png"}},
 		{U"good", Texture{U"assets\\Textures\\text_good.png"}},
 		{U"miss", Texture{U"assets\\Textures\\text_miss.png"}},
@@ -28,6 +29,7 @@ GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId({0,0}),
 		{U"broken_apple", Texture{U"assets\\Textures\\broken_apple.png"}},
 		{U"dried_apple", Texture{U"assets\\Textures\\dried_apple.png"}},
 		{U"melon", Texture{U"assets\\Textures\\melon.png"}},
+
 		{U"broken_melon", Texture{U"assets\\Textures\\broken_melon.png"}},
 		{U"dried_melon", Texture{U"assets\\Textures\\dried_melon.png"}},
 		{U"banana", Texture{U"assets\\Textures\\banana.png"}},
@@ -38,18 +40,49 @@ GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId({0,0}),
 	};
 	fruits = { U"apple", U"melon", U"banana" };
 	loadNotes();
+  
+  isMenuLock = false;
+	resumeCount = 0;
+	isResumed = false;
+	// 各ボタンの色設定など
+	this->resumeButton.setFont(20, Typeface::Regular, FontStyle::Default);
+	this->resumeButton.setBackColors(ColorF{ 1.0, 0.714, 0.757, 1.0 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->resumeButton.setOutlineWidth(3, 0);
+	this->resumeButton.setOutlineColors(ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->restartButton.setFont(20, Typeface::Regular, FontStyle::Default);
+	this->restartButton.setBackColors(ColorF{ 1.0, 0.714, 0.757, 1.0 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->restartButton.setOutlineWidth(3, 0);
+	this->restartButton.setOutlineColors(ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->exitButton.setFont(20, Typeface::Regular, FontStyle::Default);
+	this->exitButton.setBackColors(ColorF{ 1.0, 0.714, 0.757, 1.0 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
+	this->exitButton.setOutlineWidth(3, 0);
+	this->exitButton.setOutlineColors(ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.078, 0.576 ,1 }, ColorF{ 1, 0.412, 0.706 , 1 });
 }
 
 void GameScene::update() {
-	//play audio
-	if (!data.audio.isPlaying()) {
-		if (isStart)
-			changeScene(U"Title");
-		else {
+  if (isMenuLock == false && resumeCount == 0)
+	{
+		if (isResumed == true) {	// 一時停止の後再生していたら
+			isResumed = false;	// フラグを折る
 			data.audio.play();
-			isStart = true;
 		}
-	}
+
+		//play audio
+		if (!data.audio.isPlaying()) {
+			if (isStart) {
+				getData().score = this->score;
+				changeScene(U"Result");
+			}
+			else {
+				data.audio.play();
+				isStart = true;
+			}
+		}
+
+		if (KeyEscape.down()) {	// ESCキーが押されたら選択画面に戻る
+			isMenuLock = true;
+			data.audio.pause();
+		}
 
 	currentTime = uint32(data.audio.posSec() * 1000);
 
@@ -132,6 +165,26 @@ void GameScene::update() {
 			currentDryAnim = 2;
 		}
 	}
+	else	// メニュー画面中の処理
+	{
+		if (resumeCount == 0) {	// カウントダウン中でない処理
+
+			if (resumeButton.update() || KeyEscape.down()) {	// タイミング調整ボタンで調整画面に遷移
+				isMenuLock = false;
+				isResumed = true;
+				resumeCount = resumeMaxCount;	// 再開カウントダウンを設定
+			}
+			if (restartButton.update()) {	// リスタートボタン（自身に遷移する）
+				changeScene(U"Game");
+			}
+			if (exitButton.update()) {	// 曲選択に戻る
+				changeScene(U"Choice");
+			}
+		}
+		else {
+			resumeCount--;
+		}
+	}
 }
 
 void GameScene::draw() const {
@@ -145,7 +198,6 @@ void GameScene::draw() const {
 	Rect{ Scene::Center().x - 100, 0, 600, 400 }(textures.at(U"monitor")).draw();
 	//2P monitor
 	Rect{ Scene::Center().x + 450, 0, 450, 300}(textures.at(U"monitor")).draw();
-
 	//Machine
 	//Wall
 	Rect{ int(hit.left().x), int(hit.top().y) - 650, 150, int(hit.top().y) + 650 }.draw(Color{ 50, 50, 50 });
@@ -156,16 +208,16 @@ void GameScene::draw() const {
 		Vec2{int(hit.left().x) + 140, Scene::Height()},
 		Vec2{int(hit.left().x) + 140, int(hit.top().y) - 630},
 	}.draw(Color{ 140, 140, 140 });
-	
+
 	for (int j = 0; j < 2; ++j) {
 		int h = 450;
 		int beltW = 80;
 		int beltH = 120;
 		int lineW = 5;
 		//ベルトコンベア
-		Rect{ 0, int(hit.bottom().y + beltW/2 - j * h), Scene::Width(), beltW }.draw(Color{ 50,50,50 });
+		Rect{ 0, int(hit.bottom().y + beltW / 2 - j * h), Scene::Width(), beltW }.draw(Color{ 50,50,50 });
 		Rect{ 0, int(hit.bottom().y - beltW / 2 - j * h), Scene::Width(), beltW }.draw(Color{ 150,150,150 });
-		Rect{ 0, int(hit.bottom().y + beltW / 2 - lineW - j * h), Scene::Width(), lineW}.draw(Color{0,0,0});
+		Rect{ 0, int(hit.bottom().y + beltW / 2 - lineW - j * h), Scene::Width(), lineW }.draw(Color{ 0,0,0 });
 		Rect{ 0, int(hit.bottom().y + beltH - j * h), Scene::Width(), lineW }.draw(Color{ 0,0,0 });
 		Rect{ 0, int(hit.bottom().y - beltW / 2 - j * h), Scene::Width(), lineW }.draw(Color{ 0,0,0 });
 		for (int i = 0; i < Scene::Width(); i += 500) {
@@ -201,15 +253,14 @@ void GameScene::draw() const {
 		}.draw(Color{ 100,100,100 });
 	}
 	//Machine
-	
 		//Top
 	Polygon{
 		Vec2{int(hit.left().x) + 100, int(hit.top().y) - 550},
 		Vec2{int(hit.left().x) - 50, int(hit.top().y) - 550},
 		Vec2{int(hit.left().x) , int(hit.top().y) - 650},
 		Vec2{int(hit.left().x) + 150, int(hit.top().y) - 650}
-	}.draw(Color{210, 210, 210});
-		//Wall
+	}.draw(Color{ 210, 210, 210 });
+	//Wall
 	Rect{ int(hit.left().x) - 50, int(hit.top().y) - 550, 150, 450 }.draw(Color{ 180, 180, 180 });
 	Polygon{
 		Vec2{int(hit.left().x) + 150, int(hit.top().y) - 650},
@@ -251,6 +302,16 @@ void GameScene::draw() const {
 				int32(hit.top().y - 50) + (delta - 10) * (delta - 10) - 100 + 450 * (i-1)
 			);
 		}
+
+	if (isMenuLock == true) {	// メニュー画面であれば
+		Rect{ 0, 0, 1920, 1080 }.draw(ColorF{ 0.0,0.0,0.0,0.25 });	// 画面を少し灰色にする
+		this->resumeButton.draw();	// メニュー項目の表示
+		this->restartButton.draw();	// メニュー項目の表示
+		this->exitButton.draw();	// メニュー項目の表示
+	}
+	if (resumeCount > 0) {	// カウントダウン中であれば
+		int count = resumeCount / (resumeMaxCount / resumeCountNum) + 1;
+		FontAsset(U"CountFont")(U"{}"_fmt(count)).drawAt(Scene::Center().x, Scene::Center().y, Palette::Peachpuff);	// 再開カウントダウンを表示
 	}
 }
 
@@ -266,6 +327,7 @@ void GameScene::loadNotes() {
 	reader.readLine(line);
 
 	data.bpm = Parse<uint8>(line);
+
 	Array<String> params;
 	while (reader.readLine(line))
 	{
@@ -325,6 +387,7 @@ uint32 GameScene::getComb() {
 void GameScene::addScere(uint32 s) {
 	score += s;
 }
+
 uint32 GameScene::getJudgeTiming() {
 	return judgeTiming;
 }

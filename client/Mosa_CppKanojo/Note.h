@@ -9,3 +9,10 @@ public:
 private:
 	String fruit;
 };
+
+class TestNote : public TestNoteBase {
+public:
+	TestNote(class MdspeedScene* scene, uint32 timing, Texture* texture);
+	JUDGE hit(int32 delta) override;
+private:
+};

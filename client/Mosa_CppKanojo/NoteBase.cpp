@@ -1,5 +1,5 @@
-﻿#include"NoteBase.h"
-#include"GameScene.h"
+#include"./NoteBase.h"
+#include"Scenes/GameScene.h"
 
 NoteBase::NoteBase(GameScene* scene,uint32 timing, Texture* texture) :
 	scene(scene), timing(timing), texture(texture) {}
@@ -11,5 +11,21 @@ uint32 NoteBase::getTiming() {
 }
 
 const Texture* NoteBase::getTexture() {
+	return texture;
+}
+
+
+TestNoteBase::TestNoteBase(MdspeedScene* scene, uint32 timing, Texture* texture) :
+	scene(scene), timing(timing), texture(texture) {}
+
+JUDGE TestNoteBase::hitEnd(int32 delta) {
+	return JUDGE::excellent;
+}
+
+uint32 TestNoteBase::getTiming() {
+	return timing;
+}
+
+const Texture* TestNoteBase::getTexture() {
 	return texture;
 }

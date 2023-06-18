@@ -1,5 +1,6 @@
-﻿#include"LongNote.h"
-#include"GameScene.h"
+#include"./LongNote.h"
+#include"Scenes/GameScene.h"
+
 
 LongNote::LongNote(GameScene* scene, uint32 start, uint32 lenght, uint32 width, Texture* texture) :
 	NoteBase(scene, start, texture), lenght(lenght), width(width){
@@ -41,6 +42,7 @@ JUDGE LongNote::hit(int32 delta, Lane lane) {
 	}
 	return result;
 }
+
 
 void LongNote::draw(int hitX, int hitY, int currentTime, int bpm, int lane){
 	int x = int(hitX + (int(timing) - currentTime) * bpm / 300) - 50;

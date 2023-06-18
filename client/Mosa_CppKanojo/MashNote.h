@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include"NoteBase.h"
 
 class MashNote : public NoteBase {
