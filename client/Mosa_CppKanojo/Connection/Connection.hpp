@@ -16,6 +16,7 @@ namespace FruitsGroove {
 			PacketBuilder packetBuilder{};
 		public:
 			ServerConnection() {}
+			bool connect();
 			bool sendPacket(OperationType type, StringView content);
 			bool receivePacket(Packet& packet);
 		};

@@ -3,9 +3,22 @@
 
 namespace FruitsGroove {
 	namespace Connection {
+		bool ServerConnection::connect(){
+			this->client.connect(this->ip, this->port);
+			bool couldConnect = false;
+			if (client.isConnected())
+			{
+				return true;
+			}
+			if (client.hasError()) // 切断/接続エラー
+			{
+				client.disconnect();
+			}
+
+			return couldConnect;
+		}
 		bool ServerConnection::sendPacket(OperationType type, StringView content) {
 			bool couldConnect = false;
-			this->client.connect(this->ip, this->port);
 
 			this->packetBuilder.SetOperation(type).SetContent(content.narrow());
 			std::string packet = this->packetBuilder.Build();
