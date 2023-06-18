@@ -7,7 +7,8 @@ using App = SceneManager<String>;
 
 enum Lane {
 	upper,
-	under
+	under,
+	end
 };
 
 struct SongData {
@@ -53,6 +54,6 @@ private:
 
 	std::array<uint16, 4> pressAnim{ 350, 200, 250, 300 };
 	uint8 currentAnim = 0;
-	std::array<int, 4> dryAnim{ 0, 25, 50, 25 };
+	std::array<int, 4> dryAnim{ 0, 50, 35, 15 };
 	uint8 currentDryAnim = 0;
 };
