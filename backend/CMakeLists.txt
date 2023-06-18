@@ -9,6 +9,11 @@ project(MosaBackend)
 # TODO ソースファイルを追加
 set(proj_src
 	src/main.cpp
+    src/Server/Server.cpp
+    src/Room/RoomManager.cpp
+    src/Room/Room.cpp
+    src/Protocol/PacketParser.cpp
+    src/Protocol/PacketBuilder.cpp
 )
 
 # add executable
@@ -33,3 +38,52 @@ include_directories(
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC "-pthread")
+
+# GoogleTest ここから
+# GoogleTestをダウンロード
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.0.zip
+)
+
+# googletestをターゲットとして使えるようにする
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
+# # TODO 単体テスト名をセット
+# set(UNIT_TEST_EXECUTABLE_NAME
+    # Test_FruitsGroove
+# )
+
+# # TODO 単体テスト用ソースをセット
+# set(UNIT_TEST_SRC
+    # src/Test/Test.cpp
+# )
+
+# # 単体テストの定義
+# add_executable(${UNIT_TEST_EXECUTABLE_NAME} ${UNIT_TEST_SRC})
+# target_link_libraries(${UNIT_TEST_EXECUTABLE_NAME} PRIVATE gtest_main)
+
+# target_compile_features(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC cxx_std_20)
+# target_compile_options(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC
+    # $<$<CXX_COMPILER_ID:GNU>: -O3 -Wall -Wextra -Wpedantic>
+    # $<$<CXX_COMPILER_ID:MSVC>: /W4 >
+# )
+
+# # CTestへ単体テストを登録
+# include(GoogleTest)
+# gtest_discover_tests(${UNIT_TEST_EXECUTABLE_NAME})
+
+
+# spdlog導入
+FetchContent_Declare(
+    spdlog 
+    GIT_REPOSITORY https://github.com/gabime/spdlog.git
+    GIT_TAG v1.x
+)
+
+FetchContent_MakeAvailable(spdlog)
+# target_link_libraries(${UNIT_TEST_EXECUTABLE_NAME} PUBLIC spdlog)
+target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC spdlog::spdlog_header_only)
