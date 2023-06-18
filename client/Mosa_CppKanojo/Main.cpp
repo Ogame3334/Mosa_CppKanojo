@@ -1,50 +1,41 @@
-﻿# include <Siv3D.hpp>
-
-using App = SceneManager<String>;
-
-// タイトルシーン
-class Title : public App::Scene
-{
-public:
-
-	// コンストラクタ（必ず実装）
-	Title(const InitData& init)
-		: IScene{ init }
-	{
-
-	}
-
-	// 更新関数（オプション）
-	void update() override
-	{
-
-	}
-
-	// 描画関数（オプション）
-	void draw() const override
-	{
-		Scene::SetBackground(ColorF{ 0.3, 0.4, 0.5 });
-
-		FontAsset(U"TitleFont")(U"My Game").drawAt(400, 100);
-
-		Circle{ Cursor::Pos(), 50 }.draw(Palette::Orange);
-	}
-};
+# include <Siv3D.hpp>
+# include "Scenes/sceneManager.h"
 
 void Main()
 {
 	FontAsset::Register(U"TitleFont", 60, Typeface::Heavy);
-
+	FontAsset::Register(U"CombFont", 200, Typeface::Heavy);
+	FontAsset::Register(U"CountFont", 300, Typeface::Heavy);
+  FontAsset::Register(U"2PScoreFont", 40, Typeface::Heavy);
+	FontAsset::Register(U"2PCombFont", 130, Typeface::Heavy);
 	// シーンマネージャーを作成
 	App manager;
 
 	// タイトルシーン（名前は "Title"）を登録
 	manager.add<Title>(U"Title");
 
+	// 曲選択シーン（名前は "Choice"）を登録
+	manager.add<Choice>(U"Choice");
+
+	// ゲームシーン（名前は "Game"）を登録
+	manager.add<GameScene>(U"Game");
+
+	// リザルトシーン（名前は"Result"）を登録
+	manager.add<Result>(U"Result");
+
+	// 速度調整シーン（名前は"Mdspeed"）を登録
+	manager.add<MdspeedScene>(U"Mdspeed");
+
+	// 画面サイズを1920 x 1080に変更
+	Window::SetStyle(WindowStyle::Sizable);
+	Window::Resize(1920, 1080);
+
+	//Window::SetFullscreen(true);
+
+	System::SetTerminationTriggers(UserAction::NoAction);
+
 	while (System::Update())
 	{
-		// 現在のシーンを実行
-		// シーンに実装した .update() と .draw() が実行される
 		if (not manager.update())
 		{
 			break;

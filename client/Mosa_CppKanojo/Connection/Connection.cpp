@@ -39,10 +39,13 @@ namespace FruitsGroove {
 
 		bool ServerConnection::receivePacket(Packet& packet) {
 			const char* recievedPacket;
-			if(client.read(recievedPacket)){
+			constexpr int sz = 100;
+			char buffer[100];
+
+			if(client.read(buffer, sz)){
 				return false;
 			}
-			packet = ParsePacket(recievedPacket);
+			packet = ParsePacket(buffer);
 			return true;
 		}
 	}
