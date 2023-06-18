@@ -2,5 +2,6 @@
 enum JUDGE {
 	excellent,
 	good,
-	miss
+	miss,
+	none
 };

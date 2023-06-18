@@ -1,6 +1,7 @@
 ﻿#include"Scenes/GameScene.h"
 #include"Note.h"
 #include"EndNote.h"
+#include"MashNote.h"
 
 GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId{0,0}, isStart(false) {
 	data = SongData{ getData().songName, Audio{U"assets\\Songs\\{}.mp3"_fmt(getData().songName)}, 0};
@@ -14,10 +15,16 @@ GameScene::GameScene(const InitData& init) : IScene{ init }, frontNoteId{0,0}, i
 		{U"miss", Texture{U"assets\\Textures\\text_miss.png"}},
 
 		{U"press", Texture{U"assets\\Textures\\press.png"}},
+		{U"monitor", Texture{U"assets\\Textures\\monitor.png"}},
 
 		{U"apple", Texture{U"assets\\Textures\\apple.png"}},
 		{U"broken_apple", Texture{U"assets\\Textures\\broken_apple.png"}},
-		{U"dried_apple", Texture{U"assets\\Textures\\dried_apple.png"}},
+		{U"dried_apple", Texture{U"assets\\Textures\\dried_apple.png"}},{U"melon", Texture{U"assets\\Textures\\melon.png"}},
+		{U"broken_melon", Texture{U"assets\\Textures\\broken_melon.png"}},
+		{U"dried_melon", Texture{U"assets\\Textures\\dried_melon.png"}},
+		{U"banana", Texture{U"assets\\Textures\\banana.png"}},
+		{U"broken_banana", Texture{U"assets\\Textures\\broken_banana.png"}},
+		{U"dried_banana", Texture{U"assets\\Textures\\dried_banana.png"}},
 
 		{U"invisible", Texture{U"assets\\Textures\\invisible.png"}}
 	};
@@ -72,7 +79,7 @@ void GameScene::update() {
 			++currentAnim;
 			if (pressAnim.size() == currentAnim) currentAnim = 0;
 		}
-		if (currentDryAnim != 0) {
+		if (currentDryAnim > 1) {
 			++currentDryAnim;
 			if (dryAnim.size() == currentDryAnim) currentDryAnim = 0;
 		}
@@ -103,6 +110,11 @@ void GameScene::update() {
 			}
 		}
 
+		for (auto laneNotes : notes) {
+			for (auto note : laneNotes) {
+				note->update(currentTime, data.bpm);
+			}
+		}
 		//process key controle
 		n = upper;
 		if (KeyF.down() || KeyD.down() || KeyJ.down() || KeyK.down()) {
@@ -123,6 +135,21 @@ void GameScene::update() {
 			}
 			else {
 				++comb;
+			}
+		}
+		if (KeyJ.up() || KeyK.up()) {
+			JUDGE result = notes[upper].at(frontNoteId[upper])->hit(difTime[upper], end);
+			if (result != JUDGE::none) {
+				judges.push_back(std::pair<JUDGE, uint32>{
+					result, currentTime
+				});
+				if (result == JUDGE::miss) {
+					comb = 0;
+				}
+				else {
+					++comb;
+				}
+				currentDryAnim = 2;
 			}
 		}
 	}
@@ -156,6 +183,7 @@ void GameScene::draw() const {
 		Rect{ Scene::Width() / 2,Scene::Height() * i / 3,Scene::Width() / 3, Scene::Height() / 3 }(textures.at(U"bg_kibako")).draw();
 		Rect{ Scene::Width() * 2 / 3,Scene::Height() * i / 3,Scene::Width() / 3, Scene::Height() / 3 }(textures.at(U"bg_kibako")).draw();
 	}
+	Rect{ Scene::Center().x - 100, 0, 600, 400 }(textures.at(U"monitor")).draw();
 	//Machine
 	//Wall
 	Rect{ int(hit.left().x), int(hit.top().y) - 650, 150, int(hit.top().y) + 650 }.draw(Color{ 50, 50, 50 });
@@ -189,6 +217,9 @@ void GameScene::draw() const {
 				int32(hit.center.x) + int(((i + 4) * quater_bar - int(currentTime % quater_bar)) * data.bpm / 300) - 105,
 				int32(hit.center.y) + 5 - j * h, lineW, beltW + 10
 			}.rotated(10).draw(Color{ 0, 0, 0 });
+			note->draw(
+					hit.center.x, hit.center.y, currentTime, data.bpm, n
+			);
 		}
 		//draw node
 		for (int n = 0; n < 2; ++n) {
@@ -241,7 +272,8 @@ void GameScene::draw() const {
 
 	//Score
 	FontAsset(U"TitleFont")(U"Score {}"_fmt(score)).draw(100, 100);
-	FontAsset(U"CombFont")(U"{}"_fmt(comb)).draw(Scene::Center().x, Scene::Center().y - 300);
+	FontAsset(U"TitleFont")(U"{}"_fmt(score)).drawAt(Scene::Center().x + 200, 330, Color{ 240, 255, 240 });
+	FontAsset(U"CombFont")(U"{}"_fmt(comb)).drawAt(Scene::Center().x + 200, 150, Color{ 240, 255, 240 }); FontAsset(U"CombFont")(U"{}"_fmt(comb)).draw(Scene::Center().x, Scene::Center().y - 300);
 	//Judge
 	for (auto judge : judges) {
 		String judgeMsg = U"miss";
@@ -298,11 +330,23 @@ void GameScene::loadNotes() {
 		for (int i = 0; i < params[1].length(); ++i) {
 			timing += one_bar / Math::Pow(4, i) * (params[1].at(i) - '0');
 		}
+		if (params.size() == 3) {
+			uint32 lenght = 0;
+			for (int i = 0; i < params[2].length(); ++i) {
+				lenght += one_bar / Math::Pow(4, i) * (params[2].at(i) - '0');
+			}
 
-		if (params[0] == U"0")
-			notes[upper].push_back(std::shared_ptr<Note>(new Note{ this, timing, &textures[U"broken_apple"] }));
-		else
-			notes[under].push_back(std::shared_ptr<Note>(new Note{ this, timing, &textures[U"apple"] }));
+			if (params[0] == U"0")
+				notes[upper].push_back(std::shared_ptr<LongNote>(new LongNote{ this, timing, lenght, uint32(lenght * data.bpm / 300.0), &textures[U"broken_apple"] }));
+			else
+				notes[under].push_back(std::shared_ptr<MashNote>(new MashNote{ this, timing, lenght, uint32(lenght * data.bpm / 300.0), &textures[U"apple"] }));
+		}
+		else {
+			if (params[0] == U"0")
+				notes[upper].push_back(std::shared_ptr<Note>(new Note{ this, timing, &textures[U"broken_apple"] }));
+			else
+				notes[under].push_back(std::shared_ptr<Note>(new Note{ this, timing, &textures[U"apple"] }));
+		}
 	}
 	for (int i = 0; i < 2; ++i) {
 		notes[i].push_back(std::shared_ptr<EndNote>(
@@ -335,4 +379,8 @@ uint32 GameScene::getJudgeTiming() {
 
 Texture* GameScene::getTexture(String name) {
 	return &textures[name];
+}
+
+uint8 GameScene::getBpm() {
+	return data.bpm;
 }

@@ -6,6 +6,8 @@ Note::Note(GameScene* scene, uint32 timing, Texture* texture) :
 JUDGE Note::hit(int32 delta, Lane lane) {
 	JUDGE result = JUDGE::miss;
 
+	if (lane == end) return JUDGE::none;
+
 	if (delta < int32(scene->getJudgeTiming())) {
 		if (delta < int32(scene->getJudgeTiming() / 3)) {
 			result = JUDGE::excellent;
@@ -20,6 +22,12 @@ JUDGE Note::hit(int32 delta, Lane lane) {
 		scene->nextNote(lane);
 	}
 	return result;
+}
+void Note::draw(int hitX, int hitY, int currentTime, int bpm, int lane) {
+	Rect{
+		int(hitX + (int(timing) - currentTime) * bpm / 300) - 50,
+		hitY + lane * 450 - 500, 100
+	}(*texture).draw();
 }
 
 TestNote::TestNote(MdspeedScene* scene, uint32 timing, Texture* texture) :
